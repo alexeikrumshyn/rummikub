@@ -83,6 +83,32 @@ public class UnitTests {
         assertEquals(21,run3.getPoints());
         assertEquals("|G10| |G11| ", run3.toString());
 
+        //testing more variations of wraparound runs & edge cases
+        ArrayList<Tile> testRun4 = new ArrayList<Tile>();
+        testRun4.add(new Tile("R","13"));
+        testRun4.add(new Tile("R","2"));
+        testRun4.add(new Tile("R","1"));
+        TileCollection run4 = new TileCollection(testRun4);
+        assertTrue(run4.isRun());
+        assertEquals("{ |R13| |R1| |R2| }", run4.toString());
+
+        ArrayList<Tile> testRun5 = new ArrayList<Tile>();
+        testRun5.add(new Tile("R","1"));
+        testRun5.add(new Tile("R","3"));
+        testRun5.add(new Tile("R","2"));
+        TileCollection run5 = new TileCollection(testRun5);
+        assertTrue(run5.isRun());
+        assertEquals("{ |R1| |R2| |R3| }", run5.toString());
+
+        ArrayList<Tile> testRun6 = new ArrayList<Tile>();
+        testRun6.add(new Tile("O","1"));
+        testRun6.add(new Tile("O","13"));
+        testRun6.add(new Tile("O","12"));
+        testRun6.add(new Tile("O","3"));
+        testRun6.add(new Tile("O","2"));
+        TileCollection run6 = new TileCollection(testRun6);
+        assertTrue(run6.isRun());
+        assertEquals("{ |O12| |O13| |O1| |O2| |O3| }", run6.toString());
     }
 
 }
