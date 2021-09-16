@@ -1,6 +1,6 @@
 package rummikub;
 
-public class Tile {
+public class Tile implements Comparable<Tile> {
 
     private String colour;
     private String number;
@@ -26,6 +26,19 @@ public class Tile {
 
     public void setSource(String src) {
         this.source = src;
+    }
+
+    @Override
+    public int compareTo(Tile t2) {
+        if (this.getColour().equals(t2.getColour())) {
+            if (Integer.parseInt(this.getNumber()) < Integer.parseInt(t2.getNumber())) {
+                return -1;
+            } else {
+                return 1;
+            }
+        } else {
+            return this.getColour().compareTo(t2.getColour());
+        }
     }
 
     @Override
