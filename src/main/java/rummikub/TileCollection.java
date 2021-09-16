@@ -41,7 +41,7 @@ public class TileCollection {
         if (tiles.get(tiles.size()-1).getNumber().equals("13") && tiles.get(0).getNumber().equals("1")) {
             for (int i = 0; i < tiles.size()-1; ++i) {
                 tiles.add(tiles.remove(0)); //move first tile to back
-                if (Math.abs(Integer.parseInt(tiles.get(i).getNumber()) - Integer.parseInt(tiles.get(tiles.size()-1).getNumber())%13) != 1) {
+                if (Math.abs(Integer.parseInt(tiles.get(0).getNumber()) - Integer.parseInt(tiles.get(tiles.size()-1).getNumber())%13) != 1) {
                     break;
                 }
             }
