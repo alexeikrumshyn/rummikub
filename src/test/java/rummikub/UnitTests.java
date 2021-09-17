@@ -178,4 +178,69 @@ public class UnitTests {
         assertEquals("|B3| |R3| ", set5.toString());
     }
 
+    @Test
+    @DisplayName("add & remove testing of TileCollection")
+    public void addRemoveTileCollection() {
+
+        TileCollection c = new TileCollection();
+
+        //test adds
+        c.add(new Tile("B","9"));
+        c.add(new Tile("B","5"));
+        c.add(new Tile("B","7"));
+        c.add(new Tile("B","8"));
+        c.add(new Tile("B","6"));
+
+        assertTrue(c.isRun());
+        assertFalse(c.isSet());
+        assertTrue(c.isMeld());
+        assertEquals("{ |B5| |B6| |B7| |B8| |B9| }", c.toString());
+
+        c.add(new Tile("O","8"));
+        c.add(new Tile("G","8"));
+        c.add(new Tile("R","8"));
+
+        assertFalse(c.isRun());
+        assertFalse(c.isSet());
+        assertFalse(c.isMeld());
+        assertEquals("|B5| |B6| |B7| |B8| |B9| |G8| |O8| |R8| ", c.toString());
+
+        //test removes
+        Tile t = c.remove("B6");
+        assertEquals("B", t.getColour());
+        assertEquals("6", t.getNumber());
+        t = c.remove("B9");
+        assertEquals("B", t.getColour());
+        assertEquals("9", t.getNumber());
+        t = c.remove("B7");
+        assertEquals("B", t.getColour());
+        assertEquals("7", t.getNumber());
+        t = c.remove("B5");
+        assertEquals("B", t.getColour());
+        assertEquals("5", t.getNumber());
+
+        assertFalse(c.isRun());
+        assertTrue(c.isSet());
+        assertTrue(c.isMeld());
+        assertEquals("{ |B8| |G8| |O8| |R8| }", c.toString());
+
+        t = c.remove("G8");
+        assertEquals("G", t.getColour());
+        assertEquals("8", t.getNumber());
+        t = c.remove("B8");
+        assertEquals("B", t.getColour());
+        assertEquals("8", t.getNumber());
+        t = c.remove("R8");
+        assertEquals("R", t.getColour());
+        assertEquals("8", t.getNumber());
+        t = c.remove("O8");
+        assertEquals("O", t.getColour());
+        assertEquals("8", t.getNumber());
+
+        assertFalse(c.isRun());
+        assertFalse(c.isSet());
+        assertFalse(c.isMeld());
+        assertEquals("", c.toString());
+    }
+
 }
