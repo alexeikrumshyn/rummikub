@@ -50,7 +50,24 @@ public class TileCollection {
 
     /* Returns true if collection is valid set, false otherwise */
     public boolean isSet() {
-        return false;
+
+        if (tiles.size() < 3 || tiles.size() > 4) {
+            return false;
+        }
+
+        for (int i = 0; i < tiles.size(); ++i) {
+            //check if all numbers equal to first number
+            if (!tiles.get(i).getNumber().equals(tiles.get(0).getNumber())) {
+                return false;
+            }
+            //check if all colours unique
+            for (int j = i+1; j < tiles.size(); ++j) {
+                if (tiles.get(i).getColour().equals(tiles.get(j).getColour())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /* Returns true if collection is a valid meld, false otherwise */
