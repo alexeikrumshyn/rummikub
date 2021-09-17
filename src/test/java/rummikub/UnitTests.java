@@ -111,4 +111,71 @@ public class UnitTests {
         assertEquals("{ |O12| |O13| |O1| |O2| |O3| }", run6.toString());
     }
 
+    @Test
+    @DisplayName("creation of sets of tiles")
+    public void createTileSets() {
+
+        //testing basic set of 4
+        ArrayList<Tile> testSet = new ArrayList<Tile>();
+        testSet.add(new Tile("R", "3"));
+        testSet.add(new Tile("B", "3"));
+        testSet.add(new Tile("G", "3"));
+        testSet.add(new Tile("O", "3"));
+        TileCollection set = new TileCollection(testSet);
+        assertFalse(set.isRun());
+        assertTrue(set.isSet());
+        assertTrue(set.isMeld());
+        assertEquals(12,set.getPoints());
+        assertEquals("{ |B3| |G3| |O3| |R3| }", set.toString());
+
+        //testing basic set of 3
+        ArrayList<Tile> testSet2 = new ArrayList<Tile>();
+        testSet2.add(new Tile("R", "10"));
+        testSet2.add(new Tile("B", "10"));
+        testSet2.add(new Tile("G", "10"));
+        TileCollection set2 = new TileCollection(testSet2);
+        assertFalse(set2.isRun());
+        assertTrue(set2.isSet());
+        assertTrue(set2.isMeld());
+        assertEquals(30,set2.getPoints());
+        assertEquals("{ |B10| |G10| |R10| }", set2.toString());
+
+        //testing invalid set (different number)
+        ArrayList<Tile> testSet3 = new ArrayList<Tile>();
+        testSet3.add(new Tile("R", "3"));
+        testSet3.add(new Tile("B", "3"));
+        testSet3.add(new Tile("G", "3"));
+        testSet3.add(new Tile("O", "4"));
+        TileCollection set3 = new TileCollection(testSet3);
+        assertFalse(set3.isRun());
+        assertFalse(set3.isSet());
+        assertFalse(set3.isMeld());
+        assertEquals(13,set3.getPoints());
+        assertEquals("|B3| |G3| |O4| |R3| ", set3.toString());
+
+        //testing invalid set (repeated colour)
+        ArrayList<Tile> testSet4 = new ArrayList<Tile>();
+        testSet4.add(new Tile("R", "3"));
+        testSet4.add(new Tile("B", "3"));
+        testSet4.add(new Tile("G", "3"));
+        testSet4.add(new Tile("G", "3"));
+        TileCollection set4 = new TileCollection(testSet4);
+        assertFalse(set4.isRun());
+        assertFalse(set4.isSet());
+        assertFalse(set4.isMeld());
+        assertEquals(12,set4.getPoints());
+        assertEquals("|B3| |G3| |G3| |R3| ", set4.toString());
+
+        //testing invalid set (less than 3 tiles)
+        ArrayList<Tile> testSet5 = new ArrayList<Tile>();
+        testSet5.add(new Tile("R", "3"));
+        testSet5.add(new Tile("B", "3"));
+        TileCollection set5 = new TileCollection(testSet5);
+        assertFalse(set5.isRun());
+        assertFalse(set5.isSet());
+        assertFalse(set5.isMeld());
+        assertEquals(6,set5.getPoints());
+        assertEquals("|B3| |R3| ", set5.toString());
+    }
+
 }
