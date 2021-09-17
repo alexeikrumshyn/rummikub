@@ -7,6 +7,8 @@ public class TileCollection {
 
     private ArrayList<Tile> tiles;
 
+    public TileCollection() { tiles = new ArrayList<>(); }
+
     public TileCollection(ArrayList<Tile> tilesArr) {
         tiles = tilesArr;
     }
@@ -82,6 +84,26 @@ public class TileCollection {
             pts += Integer.parseInt(t.getNumber());
         }
         return pts;
+    }
+
+    /* Adds given Tile t to the collection */
+    public void add(Tile t) {
+        tiles.add(t);
+    }
+
+    /* Removes Tile corresponding to str (for example: "G8") from the collection */
+    public Tile remove(String str) {
+        //first, parse str into colour and number
+        String clr = str.substring(0,1);
+        String num = str.substring(1);
+        for (Tile t: tiles) {
+            if (t.getColour().equals(clr) && t.getNumber().equals(num)) {
+                Tile toRm = t;
+                tiles.remove(t);
+                return toRm;
+            }
+        }
+        return null;
     }
 
     @Override
