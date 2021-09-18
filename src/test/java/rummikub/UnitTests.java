@@ -243,4 +243,23 @@ public class UnitTests {
         assertEquals("", c.toString());
     }
 
+    @Test
+    @DisplayName("creation of new game")
+    public void createGame() {
+
+        Game game = new Game(); //Game constructor will populate the stock and initialize the table
+
+        //test that stock was created properly
+        String expected =
+                "|B1| |B2| |B3| |B4| |B5| |B6| |B7| |B8| |B9| |B10| |B11| |B12| |B13| " +
+                "|G1| |G2| |G3| |G4| |G5| |G6| |G7| |G8| |G9| |G10| |G11| |G12| |G13| " +
+                "|O1| |O2| |O3| |O4| |O5| |O6| |O7| |O8| |O9| |O10| |O11| |O12| |O13| " +
+                "|R1| |R2| |R3| |R4| |R5| |R6| |R7| |R8| |R9| |R10| |R11| |R12| |R13| ";
+
+        assertEquals(expected, game.getStock());
+
+        //test that table is initially empty
+        assertEquals("", game.getTable());
+
+    }
 }
