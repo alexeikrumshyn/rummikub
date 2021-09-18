@@ -24,6 +24,7 @@ public class Game {
         for (String clr : colours) {
             for (int i = 1; i <= 13; ++i) {
                 stock.add(new Tile(clr,Integer.toString(i)));
+                stock.add(new Tile(clr,Integer.toString(i)));
             }
         }
     }
