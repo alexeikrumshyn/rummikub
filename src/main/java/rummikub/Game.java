@@ -45,4 +45,19 @@ public class Game {
         return str;
     }
 
+    /* Removes, then returns the Tile at index idx from the stock */
+    public Tile removeFromStock(int idx) {
+        return stock.remove(idx);
+    }
+
+    /* Adds given meld c to table */
+    public void addMeldToTable(TileCollection meld) {
+        table.add(meld);
+    }
+
+    /* Removes Tile corresponding to String str from table */
+    public Tile removeTileFromTable(int meldNumber, String str) {
+        return table.get(meldNumber-1).remove(str);
+    }
+
 }

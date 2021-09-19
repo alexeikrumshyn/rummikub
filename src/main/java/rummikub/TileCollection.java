@@ -106,6 +106,12 @@ public class TileCollection {
         return null;
     }
 
+    /* Removes Tile at index idx from the collection */
+    public Tile remove(int idx) {
+        Collections.sort(tiles);
+        return tiles.remove(idx);
+    }
+
     @Override
     public String toString() {
         if (isRun()) {
