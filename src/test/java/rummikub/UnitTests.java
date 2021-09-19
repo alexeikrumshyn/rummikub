@@ -262,4 +262,81 @@ public class UnitTests {
         assertEquals("", game.getTable());
 
     }
+
+    @Test
+    @DisplayName("remove from stock and add & remove testing of table")
+    public void manipulateStockAndTable() {
+
+        Game game = new Game(); //Game constructor will populate the stock and initialize the table
+
+        //test "drawing" tiles from stock
+        Tile removed = game.removeFromStock(103);
+        assertEquals("|R13|",removed.toString());
+        String expected =   "|B1| |B1| |B2| |B2| |B3| |B3| |B4| |B4| |B5| |B5| |B6| |B6| |B7| |B7| |B8| |B8| |B9| |B9| |B10| |B10| |B11| |B11| |B12| |B12| |B13| |B13| " +
+                            "|G1| |G1| |G2| |G2| |G3| |G3| |G4| |G4| |G5| |G5| |G6| |G6| |G7| |G7| |G8| |G8| |G9| |G9| |G10| |G10| |G11| |G11| |G12| |G12| |G13| |G13| " +
+                            "|O1| |O1| |O2| |O2| |O3| |O3| |O4| |O4| |O5| |O5| |O6| |O6| |O7| |O7| |O8| |O8| |O9| |O9| |O10| |O10| |O11| |O11| |O12| |O12| |O13| |O13| " +
+                            "|R1| |R1| |R2| |R2| |R3| |R3| |R4| |R4| |R5| |R5| |R6| |R6| |R7| |R7| |R8| |R8| |R9| |R9| |R10| |R10| |R11| |R11| |R12| |R12| |R13| ";
+        assertEquals(expected, game.getStock());
+
+        removed = game.removeFromStock(0);
+        assertEquals("|B1|",removed.toString());
+        expected =   "|B1| |B2| |B2| |B3| |B3| |B4| |B4| |B5| |B5| |B6| |B6| |B7| |B7| |B8| |B8| |B9| |B9| |B10| |B10| |B11| |B11| |B12| |B12| |B13| |B13| " +
+                "|G1| |G1| |G2| |G2| |G3| |G3| |G4| |G4| |G5| |G5| |G6| |G6| |G7| |G7| |G8| |G8| |G9| |G9| |G10| |G10| |G11| |G11| |G12| |G12| |G13| |G13| " +
+                "|O1| |O1| |O2| |O2| |O3| |O3| |O4| |O4| |O5| |O5| |O6| |O6| |O7| |O7| |O8| |O8| |O9| |O9| |O10| |O10| |O11| |O11| |O12| |O12| |O13| |O13| " +
+                "|R1| |R1| |R2| |R2| |R3| |R3| |R4| |R4| |R5| |R5| |R6| |R6| |R7| |R7| |R8| |R8| |R9| |R9| |R10| |R10| |R11| |R11| |R12| |R12| |R13| ";
+        assertEquals(expected, game.getStock());
+
+        removed = game.removeFromStock(1);
+        assertEquals("|B2|",removed.toString());
+        expected =   "|B1| |B2| |B3| |B3| |B4| |B4| |B5| |B5| |B6| |B6| |B7| |B7| |B8| |B8| |B9| |B9| |B10| |B10| |B11| |B11| |B12| |B12| |B13| |B13| " +
+                "|G1| |G1| |G2| |G2| |G3| |G3| |G4| |G4| |G5| |G5| |G6| |G6| |G7| |G7| |G8| |G8| |G9| |G9| |G10| |G10| |G11| |G11| |G12| |G12| |G13| |G13| " +
+                "|O1| |O1| |O2| |O2| |O3| |O3| |O4| |O4| |O5| |O5| |O6| |O6| |O7| |O7| |O8| |O8| |O9| |O9| |O10| |O10| |O11| |O11| |O12| |O12| |O13| |O13| " +
+                "|R1| |R1| |R2| |R2| |R3| |R3| |R4| |R4| |R5| |R5| |R6| |R6| |R7| |R7| |R8| |R8| |R9| |R9| |R10| |R10| |R11| |R11| |R12| |R12| |R13| ";
+        assertEquals(expected, game.getStock());
+
+        //test adding melds to the table
+        TileCollection meld1 = new TileCollection();
+        meld1.add(new Tile("G","3"));
+        meld1.add(new Tile("B","3"));
+        meld1.add(new Tile("O","3"));
+        meld1.add(new Tile("R","3"));
+        game.addMeldToTable(meld1);
+        expected = "{ |B3| |G3| |O3| |R3| }" + "\n";
+        assertEquals(expected, game.getTable());
+
+        TileCollection meld2 = new TileCollection();
+        meld2.add(new Tile("R","7"));
+        meld2.add(new Tile("R","5"));
+        meld2.add(new Tile("R","6"));
+        meld2.add(new Tile("R","4"));
+        game.addMeldToTable(meld2);
+        expected = "{ |B3| |G3| |O3| |R3| }" + "\n" + "{ |R4| |R5| |R6| |R7| }" + "\n";
+        assertEquals(expected, game.getTable());
+
+        TileCollection meld3 = new TileCollection();
+        meld3.add(new Tile("O","12"));
+        meld3.add(new Tile("O","2"));
+        meld3.add(new Tile("O","1"));
+        meld3.add(new Tile("O","13"));
+        game.addMeldToTable(meld3);
+        expected = "{ |B3| |G3| |O3| |R3| }" + "\n" + "{ |R4| |R5| |R6| |R7| }" + "\n" + "{ |O12| |O13| |O1| |O2| }" + "\n";
+        assertEquals(expected, game.getTable());
+
+        //test removing tiles
+        removed = game.removeTileFromTable(1, "O3");
+        assertEquals("|O3|", removed.toString());
+        expected = "{ |B3| |G3| |R3| }" + "\n" + "{ |R4| |R5| |R6| |R7| }" + "\n" + "{ |O12| |O13| |O1| |O2| }" + "\n";
+        assertEquals(expected, game.getTable());
+
+        removed = game.removeTileFromTable(2, "R4");
+        assertEquals("|R4|", removed.toString());
+        expected = "{ |B3| |G3| |R3| }" + "\n" + "{ |R5| |R6| |R7| }" + "\n" + "{ |O12| |O13| |O1| |O2| }" + "\n";
+        assertEquals(expected, game.getTable());
+
+        removed = game.removeTileFromTable(3, "O2");
+        assertEquals("|O2|", removed.toString());
+        expected = "{ |B3| |G3| |R3| }" + "\n" + "{ |R5| |R6| |R7| }" + "\n" + "{ |O12| |O13| |O1| }" + "\n";
+        assertEquals(expected, game.getTable());
+    }
+
 }
