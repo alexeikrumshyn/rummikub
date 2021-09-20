@@ -1,5 +1,7 @@
 package rummikub;
 
+import java.util.ArrayList;
+
 public class Tile implements Comparable<Tile> {
 
     private String colour;
@@ -37,7 +39,17 @@ public class Tile implements Comparable<Tile> {
                 return 1;
             }
         } else {
-            return this.getColour().compareTo(t2.getColour());
+            ArrayList<String> colourOrder = new ArrayList<String>();
+            colourOrder.add("R");
+            colourOrder.add("B");
+            colourOrder.add("G");
+            colourOrder.add("O");
+
+            if (colourOrder.indexOf(this.getColour()) < colourOrder.indexOf(t2.getColour())) {
+                return -1;
+            } else {
+                return 1;
+            }
         }
     }
 
