@@ -1,16 +1,26 @@
 package rummikub;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TileCollection {
+public class TileCollection implements Serializable {
 
     private ArrayList<Tile> tiles;
+    public boolean checkIfMeld;
 
-    public TileCollection() { tiles = new ArrayList<>(); }
+    public TileCollection() {
+        tiles = new ArrayList<>();
+        checkIfMeld = true;
+    }
 
     public TileCollection(ArrayList<Tile> tilesArr) {
         tiles = tilesArr;
+        checkIfMeld = true;
+    }
+
+    public int getSize() {
+        return tiles.size();
     }
 
     /* Returns true if collection is a valid run, false otherwise */
@@ -124,7 +134,7 @@ public class TileCollection {
         for (Tile t: tiles) {
             str += t.toString() + " ";
         }
-        if (isMeld()) {
+        if (checkIfMeld && isMeld()) {
             str = "{ " + str + "}";
         }
         return str;

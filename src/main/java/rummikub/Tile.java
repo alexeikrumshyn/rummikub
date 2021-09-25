@@ -1,8 +1,9 @@
 package rummikub;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tile implements Comparable<Tile> {
+public class Tile  implements Comparable<Tile>, Serializable {
 
     private String colour;
     private String number;

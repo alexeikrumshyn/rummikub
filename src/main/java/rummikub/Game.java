@@ -1,15 +1,19 @@
 package rummikub;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Game {
+public class Game implements Serializable {
 
     private TileCollection stock;
     private ArrayList<TileCollection> table;
+    private boolean isOver;
 
     public Game() {
         createStock();
         table = new ArrayList<>();
+        isOver = false;
     }
 
     /* Creates the initial collection of tiles to draw from */
@@ -27,6 +31,11 @@ public class Game {
                 stock.add(new Tile(clr,Integer.toString(i)));
             }
         }
+    }
+
+    /* Returns true if the game is over, false otherwise */
+    public boolean isOver() {
+        return isOver;
     }
 
     /* Returns a string representation of the stock */
@@ -50,9 +59,28 @@ public class Game {
         return stock.remove(idx);
     }
 
+    /* Removes, then returns random Tile from the stock */
+    public Tile removeFromStock() {
+        Random rand = new Random();
+        int rndNum = rand.nextInt(stock.getSize());
+        return removeFromStock(rndNum);
+    }
+
+    /* Removes, then returns Tile corresponding to string str from the stock */
+    public Tile removeFromStock(String str) {
+        return stock.remove(str);
+    }
+
     /* Adds given meld c to table */
     public void addMeldToTable(TileCollection meld) {
         table.add(meld);
+    }
+
+    /* Creates new meld based on tiles from player's hand and table, then adds it to the table */
+    public void createMeld(ArrayList<Tile> fromHand, ArrayList<String> fromTable) {
+        //assume for now that all tiles come from the player's hand
+        TileCollection newMeld = new TileCollection(fromHand);
+        addMeldToTable(newMeld);
     }
 
     /* Removes Tile corresponding to String str from table */

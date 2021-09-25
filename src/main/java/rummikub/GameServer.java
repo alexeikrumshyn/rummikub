@@ -18,12 +18,20 @@ public class GameServer implements Serializable {
 
     ServerSocket ss;
     Server[] playerServer = new Server[3];
+    Player[] players = new Player[3];
 
     int numPlayers;
+    Game game;
 
     public GameServer() {
         System.out.println("Starting game server");
         numPlayers = 0;
+        game = new Game();
+
+        // initialize the players list with new players
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player(" ");
+        }
 
         try {
             ss = new ServerSocket(Config.GAME_SERVER_PORT_NUMBER);
@@ -36,7 +44,7 @@ public class GameServer implements Serializable {
         GameServer sr = new GameServer();
 
         sr.acceptConnections();
-        //sr.gameLoop();
+        sr.gameLoop();
     }
 
     public void acceptConnections() throws ClassNotFoundException {
@@ -64,6 +72,23 @@ public class GameServer implements Serializable {
             // start their threads
         } catch (IOException ex) {
             System.out.println("Could not connect 3 players");
+        }
+    }
+
+    public void gameLoop() {
+        try {
+            while (!game.isOver()) {
+                for (Server sr : playerServer) {
+                    sr.sendGameState();
+                    sr.receiveAndUpdateGameState();
+                }
+            }
+            for (Server sr : playerServer) {
+                sr.sendTurnNo(-1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -103,6 +128,37 @@ public class GameServer implements Serializable {
             }
         }
 
+        public void sendGameState() {
+            try {
+                dOut.writeObject(game);
+                dOut.flush();
+            } catch (IOException e) {
+                System.out.println("Game data not received");
+                e.printStackTrace();
+            }
+        }
+
+        public void receiveAndUpdateGameState() {
+            try {
+                game = (Game) dIn.readObject();
+            } catch (IOException e) {
+                System.out.println("Game data not received");
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                System.out.println("class not found");
+                e.printStackTrace();
+            }
+        }
+
+        public void sendTurnNo(int r) {
+            try {
+                dOut.writeInt(r);
+                dOut.flush();
+            } catch (Exception e) {
+                System.out.println("Turn not sent");
+                e.printStackTrace();
+            }
+        }
     }
 
 }
