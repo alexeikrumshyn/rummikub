@@ -71,7 +71,7 @@ public class UnitTests {
         assertTrue(run2.isRun());
         assertFalse(run2.isSet());
         assertTrue(run2.isMeld());
-        assertEquals(56,run2.getPoints());
+        assertEquals(50,run2.getPoints());
         assertEquals("{ |B9| |B10| |B11| |B12| |B13| |B1| }", run2.toString());
 
         //testing run with length less than 3
@@ -82,7 +82,7 @@ public class UnitTests {
         assertFalse(run3.isRun());
         assertFalse(run3.isSet());
         assertFalse(run3.isMeld());
-        assertEquals(21,run3.getPoints());
+        assertEquals(20,run3.getPoints());
         assertEquals("|G10| |G11| ", run3.toString());
 
         //testing more variations of wraparound runs & edge cases
