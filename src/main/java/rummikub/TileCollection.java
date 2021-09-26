@@ -91,7 +91,11 @@ public class TileCollection implements Serializable {
     public int getPoints() {
         int pts = 0;
         for (Tile t: tiles) {
-            pts += Integer.parseInt(t.getNumber());
+            int tileNum = Integer.parseInt(t.getNumber());
+            if (tileNum > 10)
+                pts += 10;
+            else
+                pts += tileNum;
         }
         return pts;
     }
