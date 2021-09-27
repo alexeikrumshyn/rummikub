@@ -9,6 +9,7 @@ public class Game implements Serializable {
     private TileCollection stock;
     private ArrayList<TileCollection> table;
     private boolean isOver;
+    private String winner;
 
     public Game() {
         createStock();
@@ -38,6 +39,11 @@ public class Game implements Serializable {
         return isOver;
     }
 
+    /* Sets over to be true - end of game */
+    public void setOver() {
+        isOver = true;
+    }
+
     /* Returns a string representation of the stock */
     public String getStock() {
         return stock.toString();
@@ -52,6 +58,16 @@ public class Game implements Serializable {
             str += "\n";
         }
         return str;
+    }
+
+    /* Gets the winner of the Game */
+    public String getWinner() {
+        return winner;
+    }
+
+    /* Sets the winner of the Game */
+    public void setWinner(String n) {
+        winner = n;
     }
 
     /* Removes, then returns the Tile at index idx from the stock */
@@ -76,11 +92,12 @@ public class Game implements Serializable {
         table.add(meld);
     }
 
-    /* Creates new meld based on tiles from player's hand and table, then adds it to the table */
-    public void createMeld(ArrayList<Tile> fromHand, ArrayList<String> fromTable) {
+    /* Creates new meld based on tiles from player's hand and table, then adds it to the table, then returns the new meld */
+    public TileCollection createMeld(ArrayList<Tile> fromHand, ArrayList<String> fromTable) {
         //assume for now that all tiles come from the player's hand
         TileCollection newMeld = new TileCollection(fromHand);
         addMeldToTable(newMeld);
+        return newMeld;
     }
 
     /* Removes Tile corresponding to String str from table */

@@ -19,6 +19,7 @@ public class Player implements Serializable {
 
     public String name;
     int playerId = 0;
+    boolean hasInitialPoints;
 
     Client clientConnection;
     Game game;
@@ -28,6 +29,7 @@ public class Player implements Serializable {
         name = n;
         hand = new TileCollection();
         hand.checkIfMeld = false;
+        hasInitialPoints = false;
     }
 
     public static void main(String args[]) {
@@ -67,8 +69,8 @@ public class Player implements Serializable {
         hand.add(drawnTile);
     }
 
-    /* Handles playing meld given by str on table */
-    public void playMeld(String str) {
+    /* Handles playing meld given by str on table, and returns the TileCollection object */
+    public TileCollection playMeld(String str) {
 
         //separate tiles used in meld from hand and from table
         String[] tiles = str.split("\\s+");
@@ -84,7 +86,7 @@ public class Player implements Serializable {
                 fromHand.add(removed);
             }
         }
-        game.createMeld(fromHand, fromTable);
+        return game.createMeld(fromHand, fromTable);
     }
 
     /* Returns the player's hand */
@@ -105,7 +107,7 @@ public class Player implements Serializable {
 
     /* Returns true if initial point threshold has been surpassed */
     public boolean hasInitialPoints() {
-        return false;
+        return hasInitialPoints;
     }
 
     /* Client-side game loop */
@@ -118,6 +120,10 @@ public class Player implements Serializable {
             if (game.isOver())
                 break;
             getAction();
+
+            if (hand.toString().equals(""))
+                game.setOver();
+
             sendUpdatedGame();
             ++counter;
         }
@@ -136,40 +142,52 @@ public class Player implements Serializable {
         System.out.println(getGameState());
         Scanner scn = new Scanner(System.in).useDelimiter("\n");
         String action = "";
+        ArrayList<TileCollection> meldsPlayed = new ArrayList<>();
 
         while (true) {
+            if (action.equals("end_turn"))
+                break;
+
             System.out.println("Select an action: ");
             System.out.println("(1) Play Meld on Table");
             System.out.println("(2) Draw Tile and End Turn");
             System.out.println("(3) End Turn");
-            System.out.println("(4) End Game");
             String choice = scn.next();
 
             switch (choice) {
                 case "1":
                     System.out.println("Type Meld as space-separated tiles (eg. R5 B5 G5): ");
                     String meldStr = scn.next();
-                    playMeld(meldStr);
+                    TileCollection played = playMeld(meldStr);
+                    meldsPlayed.add(played);
                     break;
                 case "2":
                     drawTile();
                     action = "end_turn";
-                    return;
+                    break;
                 case "3":
                     action = "end_turn";
-                    return;
-                case "4":
-                    action = "end_game";
-                    return;
+                    break;
             }
+        }
+        if (action.equals("end_turn")) {
+            if (!hasInitialPoints)
+                checkInitialPoints(meldsPlayed);
 
-            if (action.equals("end_turn")) {
-                //send turn over signal to server
-                break;
-            } else if (action.equals("end_game")) {
-                //send game over signal to server
-                break;
+            if (hand.toString().equals("")) {
+                game.setWinner(name);
             }
+        }
+    }
+
+    /* Checks if player just put down initial threshold of points */
+    public void checkInitialPoints(ArrayList<TileCollection> meldsPlayed) {
+        int pts = 0;
+        for (TileCollection c : meldsPlayed) {
+            pts += c.getPoints();
+        }
+        if (pts >= Config.INITIAL_POINTS_THRESHOLD) {
+            hasInitialPoints = true;
         }
     }
 

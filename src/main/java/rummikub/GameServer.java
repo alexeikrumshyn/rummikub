@@ -87,6 +87,7 @@ public class GameServer implements Serializable {
                     sr.receiveAndUpdateGameState();
                 }
             }
+            System.out.println("Game is over and the winner is: " + getWinner());
             for (Server sr : playerServer) {
                 sr.sendTurnNo(-1);
             }
@@ -97,7 +98,7 @@ public class GameServer implements Serializable {
     }
 
     public String getWinner() {
-        return null;
+        return game.getWinner();
     }
 
 
