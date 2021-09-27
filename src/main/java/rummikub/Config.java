@@ -7,11 +7,12 @@ public class Config {
     public static final int MAX_PLAYERS = 3;
     public static final int INITIAL_HAND_SIZE = 14;
 
-    public static void startTestServer() throws InterruptedException {
+    public static GameServer startTestServer() throws InterruptedException {
+
+        GameServer gameServer = new GameServer();
 
         Thread srv = new Thread(new Runnable() {
             public void run() {
-                GameServer gameServer = new GameServer();
                 try {
                     gameServer.acceptConnections();
                 } catch (ClassNotFoundException e) {
@@ -22,6 +23,7 @@ public class Config {
         });
         srv.start();
         TimeUnit.SECONDS.sleep(1);
+        return gameServer;
     }
 
 

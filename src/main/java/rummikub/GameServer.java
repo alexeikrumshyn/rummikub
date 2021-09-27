@@ -75,6 +75,10 @@ public class GameServer implements Serializable {
         }
     }
 
+    public void kill() throws IOException {
+        ss.close();
+    }
+
     public void gameLoop() {
         try {
             while (!game.isOver()) {
@@ -90,6 +94,10 @@ public class GameServer implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getWinner() {
+        return null;
     }
 
 

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -342,10 +344,10 @@ public class UnitTests {
 
     @Test
     @DisplayName("test player sequence and UI updates")
-    public void playerSequenceAndUI() throws InterruptedException {
+    public void playerSequenceAndUI() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        Config.startTestServer();
+        GameServer gameServer = Config.startTestServer();
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -397,7 +399,6 @@ public class UnitTests {
                 assertEquals("|O1| ", player1.getHand());
 
                 player1.sendUpdatedGame();
-
             }});
 
         //PLAYER 2 THREAD
@@ -438,6 +439,7 @@ public class UnitTests {
                         "==========HAND==========" + "\n" +
                         "" + "\n\n";
                 assertEquals(expected, player2.getGameState());
+
             }});
 
         //PLAYER 3 THREAD
@@ -479,6 +481,584 @@ public class UnitTests {
         TimeUnit.SECONDS.sleep(1);
         t3.start();
         TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+    }
+
+    @Test
+    @DisplayName("tests for initial 30 points")
+    public void initialPoints() throws InterruptedException, IOException {
+
+        /* P1 plays {JH QH KH} */
+
+        //SERVER THREAD
+        GameServer gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        Thread t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R12");
+                player1.drawTile("R13");
+                player1.drawTile("R11");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R11| |R12| |R13| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R11 R12 R13\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        Thread t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        Thread t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {QH QC QS} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R12");
+                player1.drawTile("G12");
+                player1.drawTile("B12");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R12| |B12| |G12| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R12 G12 B12\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {9H 10H JH QH KH} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R12");
+                player1.drawTile("R13");
+                player1.drawTile("R9");
+                player1.drawTile("R11");
+                player1.drawTile("R10");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R9| |R10| |R11| |R12| |R13| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R9 R10 R11 R12 R13\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {KH KC KS KD} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("B13");
+                player1.drawTile("R13");
+                player1.drawTile("O13");
+                player1.drawTile("G13");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R13| |B13| |G13| |O13| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "O13 B13 R13 G13\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {2H 3H 4H} {7S 8S 9S} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R2");
+                player1.drawTile("R3");
+                player1.drawTile("R4");
+                player1.drawTile("B7");
+                player1.drawTile("B8");
+                player1.drawTile("B9");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |R3| |R4| |B7| |B8| |B9| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R2 R3 R4\n" + "1\n" + "B7 B8 B9\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {2H 2S 2D} {4C 4D 4S 4H} {5D 5S 5H} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R2");
+                player1.drawTile("B2");
+                player1.drawTile("O2");
+                player1.drawTile("G4");
+                player1.drawTile("O4");
+                player1.drawTile("R4");
+                player1.drawTile("B4");
+                player1.drawTile("O5");
+                player1.drawTile("B5");
+                player1.drawTile("R5");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |R4| |R5| |B2| |B4| |B5| |G4| |O2| |O4| |O5| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R2 B2 O2\n" + "1\n" + "B4 R4 G4 O4\n" + "1\n" + "R5 B5 O5\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {8H 8C 8D} {2H 3H 4H} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R8");
+                player1.drawTile("G8");
+                player1.drawTile("O8");
+                player1.drawTile("R2");
+                player1.drawTile("R3");
+                player1.drawTile("R4");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |R3| |R4| |R8| |G8| |O8| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R8 G8 O8\n" + "1\n" + "R2 R3 R4\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {2H 2D 2S} {2C 3C 4C} {3H 3S 3D} {5S 6S 7S} */
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R2");
+                player1.drawTile("O2");
+                player1.drawTile("B2");
+                player1.drawTile("G2");
+                player1.drawTile("G3");
+                player1.drawTile("G4");
+                player1.drawTile("R3");
+                player1.drawTile("B3");
+                player1.drawTile("O3");
+                player1.drawTile("B5");
+                player1.drawTile("B6");
+                player1.drawTile("B7");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |R3| |B2| |B3| |B5| |B6| |B7| |G2| |G3| |G4| |O2| |O3| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R2 O2 B2\n" + "1\n" + "G2 G3 G4\n" + "1\n" + "R3 B3 O3\n" + "1\n" + "B5 B6 B7\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        /* P1 plays {2H 2S 2C 2D} {3C 4C 5C 6C 7C} {4D 5D 6D 7D 8D} and wins! */
+
+        //SERVER THREAD
+        GameServer gameServer_endGame = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R2"); player1.drawTile("O2"); player1.drawTile("B2"); player1.drawTile("G2");
+                player1.drawTile("G3"); player1.drawTile("G4"); player1.drawTile("G5"); player1.drawTile("G6"); player1.drawTile("G7");
+                player1.drawTile("O4"); player1.drawTile("O5"); player1.drawTile("O6"); player1.drawTile("O7"); player1.drawTile("O8");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |B2| |G2| |G3| |G4| |G5| |G6| |G7| |O2| |O4| |O5| |O6| |O7| |O8| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (end turn)
+                String inString = "1\n" + "R2 O2 B2 G2\n" + "1\n" + "G3 G4 G5 G6 G7\n" + "1\n" + "O4 O5 O6 O7 O8\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test point value is sufficient (method checks this)
+                assertTrue(player1.hasInitialPoints());
+
+                player1.sendUpdatedGame();
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        //test winner
+        assertEquals("A", gameServer_endGame.getWinner());
+
+        gameServer_endGame.kill();
+
     }
 
 }

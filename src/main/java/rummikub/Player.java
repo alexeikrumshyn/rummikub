@@ -103,6 +103,11 @@ public class Player implements Serializable {
         return str;
     }
 
+    /* Returns true if initial point threshold has been surpassed */
+    public boolean hasInitialPoints() {
+        return false;
+    }
+
     /* Client-side game loop */
     public void clientGameLoop() {
         int counter = 0;
