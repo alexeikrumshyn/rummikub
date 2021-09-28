@@ -194,6 +194,11 @@ public class Player implements Serializable {
         }
     }
 
+    /* Gets final scores of all players once game is over */
+    public String getScores() {
+        return "";
+    }
+
     /* Checks if player just put down initial threshold of points */
     public void checkInitialPoints(ArrayList<TileCollection> meldsPlayed) {
         int pts = 0;
