@@ -137,6 +137,11 @@ public class Player implements Serializable {
         clientConnection.sendGameState(game);
     }
 
+    /* Returns the list of options for player to take */
+    public String getOptions() {
+        return "";
+    }
+
     /* Prompts the user for an action for their turn */
     public void getAction() {
         Scanner scn = new Scanner(System.in).useDelimiter("\n");

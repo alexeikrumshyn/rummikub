@@ -2131,4 +2131,142 @@ public class UnitTests {
         gameServer.kill();
     }
 
+    @Test
+    @DisplayName("tests player having or choosing to draw a tile")
+    public void havingChoosingDrawTile() throws InterruptedException, IOException {
+
+        //P1 starts with {2C 2H 2D}  {3C 3H 3D} {8D 9D 10D} {8H 9H 10H} QC 7H in hand and chooses to draw
+
+        //SERVER THREAD
+        GameServer gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        Thread t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("G2"); player1.drawTile("R2"); player1.drawTile("O2");
+                player1.drawTile("G3"); player1.drawTile("R3"); player1.drawTile("O3");
+                player1.drawTile("O8"); player1.drawTile("O9"); player1.drawTile("O10");
+                player1.drawTile("R8"); player1.drawTile("R9"); player1.drawTile("R10");
+                player1.drawTile("G12"); player1.drawTile("R7");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" +
+                        "|R2| |R3| |R7| |R8| |R9| |R10| |G2| |G3| |G12| |O2| |O3| |O8| |O9| |O10| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action: play meld, so ending turn without drawing (3) is an option, then optionally draw before ending (2)
+                String inString = "1\n" + "R8 R9 R10\n" + "2\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //here, player has choice to draw tile and end turn, or end turn without drawing
+                expected = "Select an action: \n" +
+                        "(1) Play Meld on Table\n" +
+                        "(2) Draw Tile and End Turn\n" +
+                        "(3) End Turn\n";
+                assertEquals(expected, player1.getOptions());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        Thread t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        Thread t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+        //P1 starts with 2C 2C 2D 3H 3S 3S 5H 6S 7D 9H 10H JC QS KS and has to draw
+
+        //SERVER THREAD
+        gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("G2"); player1.drawTile("G2"); player1.drawTile("O2");
+                player1.drawTile("R3"); player1.drawTile("B3"); player1.drawTile("B3");
+                player1.drawTile("R5"); player1.drawTile("B6"); player1.drawTile("O7");
+                player1.drawTile("R9"); player1.drawTile("R10"); player1.drawTile("G11");
+                player1.drawTile("B12"); player1.drawTile("B13");
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" +
+                        "|R3| |R5| |R9| |R10| |B3| |B3| |B6| |B12| |B13| |G2| |G2| |G11| |O2| |O7| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action
+                String inString = "2\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //here, player has no choice but to draw tile and cannot end turn without drawing
+                expected = "Select an action: \n" +
+                        "(1) Play Meld on Table\n" +
+                        "(2) Draw Tile and End Turn\n";
+                assertEquals(expected, player1.getOptions());
+            }
+        });
+
+        //PLAYER 2 THREAD
+        t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+            }});
+
+        //PLAYER 3 THREAD
+        t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+
+    }
 }
