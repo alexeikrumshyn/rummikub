@@ -536,6 +536,13 @@ public class UnitTests {
                 System.setIn(in);
                 player1.getAction();
 
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R11| *|R12| *|R13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
             }
@@ -595,6 +602,13 @@ public class UnitTests {
                 ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
                 System.setIn(in);
                 player1.getAction();
+
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R12| *|B12| *|G12| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
@@ -658,6 +672,13 @@ public class UnitTests {
                 System.setIn(in);
                 player1.getAction();
 
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R9| *|R10| *|R11| *|R12| *|R13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
             }
@@ -718,6 +739,13 @@ public class UnitTests {
                 ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
                 System.setIn(in);
                 player1.getAction();
+
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R13| *|B13| *|G13| *|O13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
@@ -781,6 +809,14 @@ public class UnitTests {
                 ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
                 System.setIn(in);
                 player1.getAction();
+
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R2| *|R3| *|R4| }\n" +
+                        "{ *|B7| *|B8| *|B9| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
@@ -849,6 +885,15 @@ public class UnitTests {
                 System.setIn(in);
                 player1.getAction();
 
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R2| *|B2| *|O2| }\n" +
+                        "{ *|R4| *|B4| *|G4| *|O4| }\n" +
+                        "{ *|R5| *|B5| *|O5| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
             }
@@ -911,6 +956,14 @@ public class UnitTests {
                 ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
                 System.setIn(in);
                 player1.getAction();
+
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R8| *|G8| *|O8| }\n" +
+                        "{ *|R2| *|R3| *|R4| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
@@ -981,6 +1034,16 @@ public class UnitTests {
                 System.setIn(in);
                 player1.getAction();
 
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R2| *|B2| *|O2| }\n" +
+                        "{ *|G2| *|G3| *|G4| }\n" +
+                        "{ *|R3| *|B3| *|O3| }\n" +
+                        "{ *|B5| *|B6| *|B7| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
             }
@@ -1040,6 +1103,15 @@ public class UnitTests {
                 ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
                 System.setIn(in);
                 player1.getAction();
+
+                //check hand and table after play
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R2| *|B2| *|G2| *|O2| }\n" +
+                        "{ *|G3| *|G4| *|G5| *|G6| *|G7| }\n" +
+                        "{ *|O4| *|O5| *|O6| *|O7| *|O8| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player1.getGameState());
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
