@@ -20,6 +20,7 @@ public class Player implements Serializable {
     public String name;
     int playerId = 0;
     boolean hasInitialPoints;
+    private boolean mustDrawTile;
 
     Client clientConnection;
     Game game;
@@ -30,6 +31,7 @@ public class Player implements Serializable {
         hand = new TileCollection();
         hand.checkIfMeld = false;
         hasInitialPoints = false;
+        mustDrawTile = true;
     }
 
     public static void main(String args[]) {
@@ -139,13 +141,22 @@ public class Player implements Serializable {
 
     /* Returns the list of options for player to take */
     public String getOptions() {
-        return "";
+        String opts = "";
+        opts += "Select an action: \n" +
+                "(1) Play Meld on Table\n" +
+                "(2) Draw Tile and End Turn\n";
+
+        if (!mustDrawTile)
+            opts += "(3) End Turn\n";
+
+        return opts;
     }
 
     /* Prompts the user for an action for their turn */
     public void getAction() {
         Scanner scn = new Scanner(System.in).useDelimiter("\n");
         String action = "";
+        mustDrawTile = true;
         ArrayList<TileCollection> meldsPlayed = new ArrayList<>();
 
         while (true) {
@@ -153,10 +164,7 @@ public class Player implements Serializable {
                 break;
 
             System.out.println(getGameState());
-            System.out.println("Select an action: ");
-            System.out.println("(1) Play Meld on Table");
-            System.out.println("(2) Draw Tile and End Turn");
-            System.out.println("(3) End Turn");
+            System.out.println(getOptions());
             String choice = scn.next();
 
             switch (choice) {
@@ -165,6 +173,7 @@ public class Player implements Serializable {
                     String meldStr = scn.next();
                     TileCollection played = playMeld(meldStr);
                     meldsPlayed.add(played);
+                    mustDrawTile = false;
                     break;
                 case "2":
                     drawTile();
