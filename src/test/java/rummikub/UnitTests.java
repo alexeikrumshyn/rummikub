@@ -375,8 +375,10 @@ public class UnitTests {
                 System.setIn(in);
                 player1.getAction();
 
-                //test p1's hand after ending turn
-                assertEquals("|R12| |B12| |G12| |O1| ", player1.getHand());
+                //test p1's view of table and hand after ending turn
+                expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R12| |B12| |G12| |O1| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
                 player1.sendUpdatedGame();
                 player1.updateGame();
 
@@ -395,8 +397,15 @@ public class UnitTests {
                 System.setIn(in);
                 player1.getAction();
 
-                //test p1's hand after ending turn
-                assertEquals("|O1| ", player1.getHand());
+                //test p1's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |R12| |R13| }\n" +
+                        "{ |R13| |B13| |G13| }\n" +
+                        "{ |R2| |G2| |O2| }\n" +
+                        "{ *|R12| *|B12| *|G12| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|O1| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
             }});
@@ -424,8 +433,12 @@ public class UnitTests {
                 System.setIn(in);
                 player2.getAction();
 
-                //test p2's hand after playing tiles and ending turn
-                assertEquals("", player2.getHand());
+                //test p2's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R11| *|R12| *|R13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
 
                 player2.updateGame();
@@ -468,8 +481,15 @@ public class UnitTests {
                 System.setIn(in);
                 player3.getAction();
 
-                //test p3's hand after playing tiles and ending turn
-                assertEquals("", player3.getHand());
+                //test p3's hand and table after playing tiles and ending turn
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |R12| |R13| }\n" +
+                        "{ *|R13| *|B13| *|G13| }\n" +
+                        "{ *|R2| *|G2| *|O2| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "" + "\n\n";
+                assertEquals(expected, player3.getGameState());
+
                 player3.sendUpdatedGame();
 
             }});
