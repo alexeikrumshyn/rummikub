@@ -139,7 +139,6 @@ public class Player implements Serializable {
 
     /* Prompts the user for an action for their turn */
     public void getAction() {
-        System.out.println(getGameState());
         Scanner scn = new Scanner(System.in).useDelimiter("\n");
         String action = "";
         ArrayList<TileCollection> meldsPlayed = new ArrayList<>();
@@ -148,6 +147,7 @@ public class Player implements Serializable {
             if (action.equals("end_turn"))
                 break;
 
+            System.out.println(getGameState());
             System.out.println("Select an action: ");
             System.out.println("(1) Play Meld on Table");
             System.out.println("(2) Draw Tile and End Turn");

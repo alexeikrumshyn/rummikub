@@ -82,9 +82,10 @@ public class GameServer implements Serializable {
     public void gameLoop() {
         try {
             while (!game.isOver()) {
-                for (Server sr : playerServer) {
-                    sr.sendGameState();
-                    sr.receiveAndUpdateGameState();
+                for (int i = 0; i < numPlayers; ++i) {
+                    System.out.println("PLAYER " + (i+1) + "'s turn");
+                    playerServer[i].sendGameState();
+                    playerServer[i].receiveAndUpdateGameState();
                 }
             }
             System.out.println("Game is over and the winner is: " + getWinner());
