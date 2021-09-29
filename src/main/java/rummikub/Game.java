@@ -10,11 +10,13 @@ public class Game implements Serializable {
     private ArrayList<TileCollection> table;
     private boolean isOver;
     private String winner;
+    private int[] scores;
 
     public Game() {
         createStock();
         table = new ArrayList<>();
         isOver = false;
+        scores = new int[]{0, 0, 0};
     }
 
     /* Creates the initial collection of tiles to draw from */
@@ -68,6 +70,16 @@ public class Game implements Serializable {
     /* Sets the winner of the Game */
     public void setWinner(String n) {
         winner = n;
+    }
+
+    /* Gets the scores of all players */
+    public int[] getScores() {
+        return scores;
+    }
+
+    /* Sets the score of player p to s */
+    public void setScore(int p, int s) {
+        scores[p-1] = s;
     }
 
     /* Removes, then returns the Tile at index idx from the stock */

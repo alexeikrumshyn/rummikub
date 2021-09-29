@@ -123,9 +123,6 @@ public class Player implements Serializable {
                 break;
             getAction();
 
-            if (hand.toString().equals(""))
-                game.setOver();
-
             sendUpdatedGame();
             ++counter;
         }
@@ -133,9 +130,14 @@ public class Player implements Serializable {
 
     public void updateGame() {
         game = clientConnection.receiveGameState();
+        if (game.isOver()) {
+            game.setScore(playerId, hand.getPoints());
+            sendUpdatedGame();
+        }
     }
 
     public void sendUpdatedGame() {
+        game.setScore(playerId, hand.getPoints());
         clientConnection.sendGameState(game);
     }
 
@@ -190,13 +192,17 @@ public class Player implements Serializable {
 
             if (hand.toString().equals("")) {
                 game.setWinner(name);
+                game.setScore(playerId, 0);
+                game.setOver();
             }
         }
     }
 
     /* Gets final scores of all players once game is over */
-    public String getScores() {
-        return "";
+    public String getFinalScores() {
+        //int[] scores = clientConnection.receiveScores();
+        int[] scores = game.getScores();
+        return "GAME OVER. Final Scores:\nPlayer 1: "+ scores[0]*-1 + "\nPlayer 2: " + scores[1]*-1 + "\nPlayer 3: " + scores[2]*-1 + "\n";
     }
 
     /* Checks if player just put down initial threshold of points */
