@@ -1180,11 +1180,12 @@ public class UnitTests {
                 player1.drawTile("G2");
                 player1.drawTile("G3");
                 player1.drawTile("G4");
+                player1.drawTile("O1");
 
                 //test p1's view of table (empty) and their hand
                 String expected = "==========TABLE==========" + "\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R11| |R12| |R13| |G2| |G3| |G4| " + "\n\n";
+                        "|R11| |R12| |R13| |G2| |G3| |G4| |O1| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action
@@ -1197,7 +1198,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|G2| |G3| |G4| " + "\n\n";
+                        "|G2| |G3| |G4| |O1| " + "\n\n";
 
                 assertEquals(expected, player1.getGameState());
                 player1.sendUpdatedGame();
@@ -1209,7 +1210,7 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ |O11| |O12| |O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|G2| |G3| |G4| " + "\n\n";
+                        "|G2| |G3| |G4| |O1| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action (play meld, then end turn)
@@ -1225,10 +1226,11 @@ public class UnitTests {
                         "{ |O11| |O12| |O13| }\n" +
                         "{ *|G2| *|G3| *|G4| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|O1| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
+                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1243,12 +1245,13 @@ public class UnitTests {
                 player2.drawTile("B11");
                 player2.drawTile("B12");
                 player2.drawTile("B13");
+                player2.drawTile("G1");
 
                 //test p2's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|B11| |B12| |B13| " + "\n\n";
+                        "|B11| |B12| |B13| |G1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
 
@@ -1263,10 +1266,11 @@ public class UnitTests {
                         "{ |R11| |R12| |R13| }\n"+
                         "{ *|B11| *|B12| *|B13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
+                player2.updateGame();
 
             }});
 
@@ -1282,13 +1286,14 @@ public class UnitTests {
                 player3.drawTile("O11");
                 player3.drawTile("O12");
                 player3.drawTile("O13");
+                player3.drawTile("O1");
 
                 //test p3's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n" +
                         "{ |B11| |B12| |B13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|O11| |O12| |O13| " + "\n\n";
+                        "|O1| |O11| |O12| |O13| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action
@@ -1303,9 +1308,10 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ *|O11| *|O12| *|O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|O1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
+                player3.updateGame();
 
             }});
 
@@ -1343,11 +1349,12 @@ public class UnitTests {
                 player1.drawTile("O8");
                 player1.drawTile("O9");
                 player1.drawTile("O10");
+                player1.drawTile("O13");
 
                 //test p1's view of table (empty) and their hand
                 String expected = "==========TABLE==========" + "\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R11| |R12| |R13| |G2| |G3| |G4| |O8| |O9| |O10| " + "\n\n";
+                        "|R11| |R12| |R13| |G2| |G3| |G4| |O8| |O9| |O10| |O13| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action
@@ -1360,7 +1367,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|G2| |G3| |G4| |O8| |O9| |O10| " + "\n\n";
+                        "|G2| |G3| |G4| |O8| |O9| |O10| |O13| " + "\n\n";
 
                 assertEquals(expected, player1.getGameState());
                 player1.sendUpdatedGame();
@@ -1372,7 +1379,7 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ |O11| |O12| |O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|G2| |G3| |G4| |O8| |O9| |O10| " + "\n\n";
+                        "|G2| |G3| |G4| |O8| |O9| |O10| |O13| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action (play meld, then end turn)
@@ -1389,10 +1396,11 @@ public class UnitTests {
                         "{ *|G2| *|G3| *|G4| }\n" +
                         "{ *|O8| *|O9| *|O10| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|O13| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
+                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1407,12 +1415,13 @@ public class UnitTests {
                 player2.drawTile("B11");
                 player2.drawTile("B12");
                 player2.drawTile("B13");
+                player2.drawTile("G13");
 
                 //test p2's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|B11| |B12| |B13| " + "\n\n";
+                        "|B11| |B12| |B13| |G13| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
 
@@ -1427,10 +1436,11 @@ public class UnitTests {
                         "{ |R11| |R12| |R13| }\n"+
                         "{ *|B11| *|B12| *|B13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G13| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
+                player2.updateGame();
 
             }});
 
@@ -1446,13 +1456,14 @@ public class UnitTests {
                 player3.drawTile("O11");
                 player3.drawTile("O12");
                 player3.drawTile("O13");
+                player3.drawTile("R1");
 
                 //test p3's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n" +
                         "{ |B11| |B12| |B13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|O11| |O12| |O13| " + "\n\n";
+                        "|R1| |O11| |O12| |O13| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action
@@ -1467,9 +1478,10 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ *|O11| *|O12| *|O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|R1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
+                player3.updateGame();
 
             }});
 
@@ -1482,7 +1494,7 @@ public class UnitTests {
         TimeUnit.SECONDS.sleep(1);
 
         gameServer.kill();
-
+//****************
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 2H 2D} from hand
 
@@ -1504,11 +1516,12 @@ public class UnitTests {
                 player1.drawTile("R2");
                 player1.drawTile("G2");
                 player1.drawTile("O2");
+                player1.drawTile("G1");
 
                 //test p1's view of table (empty) and their hand
                 String expected = "==========TABLE==========" + "\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R11| |R12| |R13| |G2| |O2| " + "\n\n";
+                        "|R2| |R11| |R12| |R13| |G1| |G2| |O2| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action
@@ -1521,7 +1534,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |G2| |O2| " + "\n\n";
+                        "|R2| |G1| |G2| |O2| " + "\n\n";
 
                 assertEquals(expected, player1.getGameState());
                 player1.sendUpdatedGame();
@@ -1533,7 +1546,7 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ |O11| |O12| |O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |G2| |O2| " + "\n\n";
+                        "|R2| |G1| |G2| |O2| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action (play meld, then end turn)
@@ -1549,10 +1562,11 @@ public class UnitTests {
                         "{ |O11| |O12| |O13| }\n" +
                         "{ *|R2| *|G2| *|O2| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G1| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
+                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1567,12 +1581,13 @@ public class UnitTests {
                 player2.drawTile("B11");
                 player2.drawTile("B12");
                 player2.drawTile("B13");
+                player2.drawTile("R1");
 
                 //test p2's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|B11| |B12| |B13| " + "\n\n";
+                        "|R1| |B11| |B12| |B13| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
 
@@ -1587,10 +1602,11 @@ public class UnitTests {
                         "{ |R11| |R12| |R13| }\n"+
                         "{ *|B11| *|B12| *|B13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|R1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
+                player2.updateGame();
 
             }});
 
@@ -1606,13 +1622,14 @@ public class UnitTests {
                 player3.drawTile("O11");
                 player3.drawTile("O12");
                 player3.drawTile("O13");
+                player3.drawTile("B1");
 
                 //test p3's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n" +
                         "{ |B11| |B12| |B13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|O11| |O12| |O13| " + "\n\n";
+                        "|B1| |O11| |O12| |O13| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action
@@ -1627,9 +1644,10 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ *|O11| *|O12| *|O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|B1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
+                player3.updateGame();
 
             }});
 
@@ -1668,11 +1686,12 @@ public class UnitTests {
                 player1.drawTile("B8");
                 player1.drawTile("O8");
                 player1.drawTile("G8");
+                player1.drawTile("B1");
 
                 //test p1's view of table (empty) and their hand
                 String expected = "==========TABLE==========" + "\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R8| |R11| |R12| |R13| |B8| |G2| |G8| |O2| |O8| " + "\n\n";
+                        "|R2| |R8| |R11| |R12| |R13| |B1| |B8| |G2| |G8| |O2| |O8| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action
@@ -1685,7 +1704,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R8| |B8| |G2| |G8| |O2| |O8| " + "\n\n";
+                        "|R2| |R8| |B1| |B8| |G2| |G8| |O2| |O8| " + "\n\n";
 
                 assertEquals(expected, player1.getGameState());
                 player1.sendUpdatedGame();
@@ -1697,7 +1716,7 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ |O11| |O12| |O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R8| |B8| |G2| |G8| |O2| |O8| " + "\n\n";
+                        "|R2| |R8| |B1| |B8| |G2| |G8| |O2| |O8| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action (play meld, then end turn)
@@ -1714,10 +1733,11 @@ public class UnitTests {
                         "{ *|R2| *|G2| *|O2| }\n" +
                         "{ *|R8| *|B8| *|G8| *|O8| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|B1| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
+                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1732,12 +1752,13 @@ public class UnitTests {
                 player2.drawTile("B11");
                 player2.drawTile("B12");
                 player2.drawTile("B13");
+                player2.drawTile("R1");
 
                 //test p2's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|B11| |B12| |B13| " + "\n\n";
+                        "|R1| |B11| |B12| |B13| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
 
@@ -1752,10 +1773,11 @@ public class UnitTests {
                         "{ |R11| |R12| |R13| }\n"+
                         "{ *|B11| *|B12| *|B13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|R1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
+                player2.updateGame();
 
             }});
 
@@ -1771,13 +1793,14 @@ public class UnitTests {
                 player3.drawTile("O11");
                 player3.drawTile("O12");
                 player3.drawTile("O13");
+                player3.drawTile("G1");
 
                 //test p3's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n" +
                         "{ |B11| |B12| |B13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|O11| |O12| |O13| " + "\n\n";
+                        "|G1| |O11| |O12| |O13| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action
@@ -1792,9 +1815,10 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ *|O11| *|O12| *|O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
+                player3.updateGame();
 
             }});
 
@@ -1832,11 +1856,12 @@ public class UnitTests {
                 player1.drawTile("O8");
                 player1.drawTile("O9");
                 player1.drawTile("O10");
+                player1.drawTile("B1");
 
                 //test p1's view of table (empty) and their hand
                 String expected = "==========TABLE==========" + "\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R11| |R12| |R13| |G2| |O2| |O8| |O9| |O10| " + "\n\n";
+                        "|R2| |R11| |R12| |R13| |B1| |G2| |O2| |O8| |O9| |O10| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action
@@ -1849,7 +1874,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |G2| |O2| |O8| |O9| |O10| " + "\n\n";
+                        "|R2| |B1| |G2| |O2| |O8| |O9| |O10| " + "\n\n";
 
                 assertEquals(expected, player1.getGameState());
                 player1.sendUpdatedGame();
@@ -1861,7 +1886,7 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ |O11| |O12| |O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |G2| |O2| |O8| |O9| |O10| " + "\n\n";
+                        "|R2| |B1| |G2| |O2| |O8| |O9| |O10| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action (play meld, then end turn)
@@ -1878,10 +1903,11 @@ public class UnitTests {
                         "{ *|R2| *|G2| *|O2| }\n" +
                         "{ *|O8| *|O9| *|O10| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|B1| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
+                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1896,12 +1922,13 @@ public class UnitTests {
                 player2.drawTile("B11");
                 player2.drawTile("B12");
                 player2.drawTile("B13");
+                player2.drawTile("O1");
 
                 //test p2's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|B11| |B12| |B13| " + "\n\n";
+                        "|B11| |B12| |B13| |O1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
 
@@ -1916,10 +1943,11 @@ public class UnitTests {
                         "{ |R11| |R12| |R13| }\n"+
                         "{ *|B11| *|B12| *|B13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|O1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
+                player2.updateGame();
 
             }});
 
@@ -1935,13 +1963,14 @@ public class UnitTests {
                 player3.drawTile("O11");
                 player3.drawTile("O12");
                 player3.drawTile("O13");
+                player3.drawTile("G1");
 
                 //test p3's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n" +
                         "{ |B11| |B12| |B13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|O11| |O12| |O13| " + "\n\n";
+                        "|G1| |O11| |O12| |O13| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action
@@ -1956,9 +1985,10 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ *|O11| *|O12| *|O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
+                player3.updateGame();
 
             }});
 
@@ -1972,6 +2002,7 @@ public class UnitTests {
 
         gameServer.kill();
 
+//****************
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 2H 2D}  {3C 3H 3D} {8C 9C 10C JC QC} from hand
 
@@ -1991,11 +2022,12 @@ public class UnitTests {
                 player1.drawTile("R2"); player1.drawTile("G2"); player1.drawTile("O2");
                 player1.drawTile("G3"); player1.drawTile("R3"); player1.drawTile("O3");
                 player1.drawTile("G8"); player1.drawTile("G9"); player1.drawTile("G10"); player1.drawTile("G11"); player1.drawTile("G12");
+                player1.drawTile("O13");
 
                 //test p1's view of table (empty) and their hand
                 String expected = "==========TABLE==========" + "\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R3| |R11| |R12| |R13| |G2| |G3| |G8| |G9| |G10| |G11| |G12| |O2| |O3| " + "\n\n";
+                        "|R2| |R3| |R11| |R12| |R13| |G2| |G3| |G8| |G9| |G10| |G11| |G12| |O2| |O3| |O13| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action
@@ -2008,7 +2040,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R3| |G2| |G3| |G8| |G9| |G10| |G11| |G12| |O2| |O3| " + "\n\n";
+                        "|R2| |R3| |G2| |G3| |G8| |G9| |G10| |G11| |G12| |O2| |O3| |O13| " + "\n\n";
 
                 assertEquals(expected, player1.getGameState());
                 player1.sendUpdatedGame();
@@ -2020,7 +2052,7 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ |O11| |O12| |O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|R2| |R3| |G2| |G3| |G8| |G9| |G10| |G11| |G12| |O2| |O3| " + "\n\n";
+                        "|R2| |R3| |G2| |G3| |G8| |G9| |G10| |G11| |G12| |O2| |O3| |O13| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 //prompt p1 for action (play meld, then end turn)
@@ -2038,10 +2070,11 @@ public class UnitTests {
                         "{ *|R3| *|G3| *|O3| }\n" +
                         "{ *|G8| *|G9| *|G10| *|G11| *|G12| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|O13| " + "\n\n";
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
+                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -2056,12 +2089,13 @@ public class UnitTests {
                 player2.drawTile("B11");
                 player2.drawTile("B12");
                 player2.drawTile("B13");
+                player2.drawTile("O1");
 
                 //test p2's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "|B11| |B12| |B13| " + "\n\n";
+                        "|B11| |B12| |B13| |O1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
 
@@ -2076,10 +2110,11 @@ public class UnitTests {
                         "{ |R11| |R12| |R13| }\n"+
                         "{ *|B11| *|B12| *|B13| }\n"+ "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|O1| " + "\n\n";
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
+                player2.updateGame();
 
             }});
 
@@ -2095,13 +2130,14 @@ public class UnitTests {
                 player3.drawTile("O11");
                 player3.drawTile("O12");
                 player3.drawTile("O13");
+                player3.drawTile("G1");
 
                 //test p3's view of table and their hand
                 String expected = "==========TABLE==========" + "\n" +
                         "{ |R11| |R12| |R13| }\n" +
                         "{ |B11| |B12| |B13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "|O11| |O12| |O13| " + "\n\n";
+                        "|G1| |O11| |O12| |O13| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action
@@ -2116,9 +2152,10 @@ public class UnitTests {
                         "{ |B11| |B12| |B13| }\n" +
                         "{ *|O11| *|O12| *|O13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
+                player3.updateGame();
 
             }});
 
