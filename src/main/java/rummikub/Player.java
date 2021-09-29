@@ -172,6 +172,7 @@ public class Player implements Serializable {
             switch (choice) {
                 case "1":
                     System.out.println("Type Meld as space-separated tiles (eg. R5 B5 G5): ");
+                    System.out.println("Note: if reusing tile from table, specify from which meld it is coming from, then a colon, then the tile (eg. 1:R5) ");
                     String meldStr = scn.next();
                     TileCollection played = playMeld(meldStr);
                     meldsPlayed.add(played);

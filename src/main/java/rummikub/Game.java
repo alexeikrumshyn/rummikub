@@ -106,9 +106,21 @@ public class Game implements Serializable {
 
     /* Creates new meld based on tiles from player's hand and table, then adds it to the table, then returns the new meld */
     public TileCollection createMeld(ArrayList<Tile> fromHand, ArrayList<String> fromTable) {
-        //assume for now that all tiles come from the player's hand
+
         for (Tile t : fromHand)
             t.setSource("hand");
+
+        ArrayList<Tile> tilesFromTable = new ArrayList<>();
+        for (String str : fromTable) {
+            String[] splitStr = str.split(":");
+            tilesFromTable.add(removeTileFromTable(Integer.parseInt(splitStr[0]), splitStr[1]));
+        }
+
+        for (Tile t : tilesFromTable)
+            t.setSource("table");
+
+        fromHand.addAll(tilesFromTable);
+
         TileCollection newMeld = new TileCollection(fromHand);
         addMeldToTable(newMeld);
         return newMeld;
