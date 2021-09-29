@@ -422,9 +422,10 @@ public class UnitTests {
                 player2.drawTile("R12");
                 player2.drawTile("R11");
                 player2.drawTile("R13");
+                player2.drawTile("B1");
 
                 //test p2's view of table (empty) and their hand
-                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R11| |R12| |R13| " + "\n\n";
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R11| |R12| |R13| |B1| " + "\n\n";
                 assertEquals(expected, player2.getGameState());
 
                 //prompt p2 for action (play meld, then end turn)
@@ -437,7 +438,7 @@ public class UnitTests {
                 expected = "==========TABLE==========" + "\n" +
                         "{ *|R11| *|R12| *|R13| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|B1| " + "\n\n";
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
 
@@ -450,7 +451,7 @@ public class UnitTests {
                         "{ |R2| |G2| |O2| }\n" +
                         "{ |R12| |B12| |G12| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|B1| " + "\n\n";
                 assertEquals(expected, player2.getGameState());
 
             }});
@@ -470,9 +471,10 @@ public class UnitTests {
                 player3.drawTile("O2");
                 player3.drawTile("R2");
                 player3.drawTile("G13");
+                player3.drawTile("G1");
 
                 //test p3's view of table and their hand
-                String expected = "==========TABLE==========" + "\n" + "{ |R11| |R12| |R13| }\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |R13| |B13| |G2| |G13| |O2| " + "\n\n";
+                String expected = "==========TABLE==========" + "\n" + "{ |R11| |R12| |R13| }\n" + "\n" + "==========HAND==========" + "\n" + "|R2| |R13| |B13| |G1| |G2| |G13| |O2| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 //prompt p3 for action (play two melds, then end turn)
@@ -487,7 +489,7 @@ public class UnitTests {
                         "{ *|R13| *|B13| *|G13| }\n" +
                         "{ *|R2| *|G2| *|O2| }\n" + "\n" +
                         "==========HAND==========" + "\n" +
-                        "" + "\n\n";
+                        "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
 
                 player3.sendUpdatedGame();
