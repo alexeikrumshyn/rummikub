@@ -2686,4 +2686,197 @@ public class UnitTests {
 
         gameServer.kill();
     }
+
+    @Test
+    @DisplayName("completing a partial run from a hand by reusing from a set of 4 of the table")
+    public void partialHandRunReuseTableSet() throws InterruptedException, IOException {
+
+        //SERVER THREAD
+        GameServer gameServer = Config.startTestServer();
+
+        //PLAYER 1 THREAD
+        Thread t1 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player1 = new Player("A");
+                player1.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player1.updateGame();
+
+                //draw p1's initial hand (rig to include tiles that are part of test)
+                player1.drawTile("R11");
+                player1.drawTile("O11");
+                player1.drawTile("B11");
+                player1.drawTile("G11");
+
+                player1.drawTile("O1");
+                //more tiles, which don't matter...
+
+                //test p1's view of table (empty) and their hand
+                String expected = "==========TABLE==========" + "\n" + "\n" + "==========HAND==========" + "\n" + "|R11| |B11| |G11| |O1| |O11| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action
+                String inString = "1\n" + "R11 O11 B11 G11\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                //test p1's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ *|R11| *|B11| *|G11| *|O11| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|O1| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                player1.sendUpdatedGame();
+                player1.updateGame();
+
+                //test p1's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |B11| |G11| |O11| }\n" +
+                        "{ |R12| |B12| |G12| }\n" +
+                        "{ |O7| |O8| |O9| |O10| |O11| |O12| |O13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|O1| " + "\n\n";
+                assertEquals(expected, player1.getGameState());
+
+                //prompt p1 for action (draw and end)
+                inString = "2\n";
+                in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player1.getAction();
+
+                player1.sendUpdatedGame();
+            }});
+
+        //PLAYER 2 THREAD
+        Thread t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player2 = new Player("B");
+                player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player2.updateGame();
+
+                //draw p2's initial hand
+                player2.drawTile("R12");
+                player2.drawTile("B12");
+                player2.drawTile("G12");
+
+                player2.drawTile("R12");
+                player2.drawTile("R13");
+
+                player2.drawTile("R1");
+                //more tiles, which don't matter...
+
+                //test p2's view of table and their hand
+                String expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |B11| |G11| |O11| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|R1| |R12| |R12| |R13| |B12| |G12| " + "\n\n";
+                assertEquals(expected, player2.getGameState());
+
+                //prompt p2 for action (play meld, then end turn)
+                String inString = "1\n" + "R12 B12 G12\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player2.getAction();
+
+                //test p2's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |B11| |G11| |O11| }\n" +
+                        "{ *|R12| *|B12| *|G12| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|R1| |R12| |R13| " + "\n\n";
+                assertEquals(expected, player2.getGameState());
+                player2.sendUpdatedGame();
+
+                player2.updateGame();
+
+                //test p2's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |B11| |G11| |O11| }\n" +
+                        "{ |R12| |B12| |G12| }\n" +
+                        "{ |O7| |O8| |O9| |O10| |O11| |O12| |O13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|R1| |R12| |R13| " + "\n\n";
+                assertEquals(expected, player2.getGameState());
+
+                //prompt p2 for action
+                inString = "1\n" + "1:R11 R12 R13\n" + "3\n";
+                in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player2.getAction();
+
+                //test p2's view of table and their hand
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |B11| |G11| |O11| }\n" +
+                        "{ |R12| |B12| |G12| }\n" +
+                        "{ |O7| |O8| |O9| |O10| |O11| |O12| |O13| }\n" +
+                        "{ !|R11| *|R12| *|R13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|R1| " + "\n\n";
+                assertEquals(expected, player2.getGameState());
+
+                player2.sendUpdatedGame();
+
+            }});
+
+        //PLAYER 3 THREAD
+        Thread t3 = new Thread(new Runnable() {
+            public void run()
+            {
+                Player player3 = new Player("C");
+                player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
+                player3.updateGame();
+
+                //draw p3's initial hand
+                player3.drawTile("O7");
+                player3.drawTile("O8");
+                player3.drawTile("O9");
+                player3.drawTile("O10");
+                player3.drawTile("O11");
+                player3.drawTile("O12");
+                player3.drawTile("O13");
+
+                player3.drawTile("G1");
+                //more tiles, which don't matter...
+
+                //test p3's view of table and their hand
+                String expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |B11| |G11| |O11| }\n" +
+                        "{ |R12| |B12| |G12| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|G1| |O7| |O8| |O9| |O10| |O11| |O12| |O13| " + "\n\n";
+                assertEquals(expected, player3.getGameState());
+
+                //prompt p3 for action (play two melds, then end turn)
+                String inString = "1\n" + "O7 O8 O9 O10 O11 O12 O13\n" + "3\n";
+                ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
+                System.setIn(in);
+                player3.getAction();
+
+                //test p3's hand and table after playing tiles and ending turn
+                expected = "==========TABLE==========" + "\n" +
+                        "{ |R11| |B11| |G11| |O11| }\n" +
+                        "{ |R12| |B12| |G12| }\n" +
+                        "{ *|O7| *|O8| *|O9| *|O10| *|O11| *|O12| *|O13| }\n" + "\n" +
+                        "==========HAND==========" + "\n" +
+                        "|G1| " + "\n\n";
+                assertEquals(expected, player3.getGameState());
+
+                player3.sendUpdatedGame();
+                player3.updateGame();
+
+            }});
+
+        //start threads with slight delay in between to ensure proper order
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        TimeUnit.SECONDS.sleep(1);
+        t3.start();
+        TimeUnit.SECONDS.sleep(1);
+
+        gameServer.kill();
+    }
 }
