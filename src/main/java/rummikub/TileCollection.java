@@ -30,12 +30,15 @@ public class TileCollection implements Serializable {
             return false;
         }
 
-        arrangeRun();
-        for (int i = 0; i < tiles.size()-1; ++i) {
-            //check if all colours equal to first colour
+        //check if all colours equal to first colour
+        for (int i = 0; i < tiles.size(); ++i) {
             if (!tiles.get(i).getColour().equals(tiles.get(0).getColour())) {
                 return false;
             }
+        }
+
+        arrangeRun();
+        for (int i = 0; i < tiles.size()-1; ++i) {
             //check if numbers are sequential - considering special case of 13 (King) wrapping around to 1 (Ace)
             int nextNum = Integer.parseInt(tiles.get(i+1).getNumber());
             int currentNum = Integer.parseInt(tiles.get(i).getNumber());
@@ -128,7 +131,7 @@ public class TileCollection implements Serializable {
 
     @Override
     public String toString() {
-        if (isRun()) {
+        if (checkIfMeld && isRun()) {
             arrangeRun();
         } else {
             Collections.sort(tiles);
