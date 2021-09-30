@@ -124,6 +124,8 @@ public class Game implements Serializable {
                 checkBrokenRun(Integer.parseInt(splitStr[0])-1);
         }
 
+        fixEmptyMelds();
+
         for (Tile t : tilesFromTable)
             t.setSource("table");
 
@@ -162,6 +164,19 @@ public class Game implements Serializable {
                 }
                 return;
             }
+        }
+    }
+
+    /* Checks if any melds on table are empty, and deletes if so */
+    public void fixEmptyMelds() {
+        ArrayList<TileCollection> empties = new ArrayList<>();
+        for (TileCollection c : table) {
+            if (c.getSize() == 0) {
+                empties.add(c);
+            }
+        }
+        for (TileCollection c : empties) {
+            table.remove(c);
         }
     }
 
