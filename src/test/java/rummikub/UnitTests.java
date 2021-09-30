@@ -347,7 +347,7 @@ public class UnitTests {
     public void playerSequenceAndUI() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -504,7 +504,7 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 
     @Test
@@ -514,7 +514,7 @@ public class UnitTests {
         /* P1 plays {JH QH KH} */
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -547,6 +547,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -576,12 +577,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {QH QC QS} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -614,6 +615,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -643,12 +645,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {9H 10H JH QH KH} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -683,6 +685,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -712,12 +715,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {KH KC KS KD} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -751,6 +754,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -780,12 +784,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {2H 3H 4H} {7S 8S 9S} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -822,6 +826,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -851,12 +856,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {2H 2S 2D} {4C 4D 4S 4H} {5D 5S 5H} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -898,6 +903,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -927,12 +933,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {8H 8C 8D} {2H 3H 4H} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -969,6 +975,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -998,12 +1005,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {2H 2D 2S} {2C 3C 4C} {3H 3S 3D} {5S 6S 7S} */
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1048,6 +1055,7 @@ public class UnitTests {
 
                 //test point value is sufficient (method checks this)
                 assertTrue(player1.hasInitialPoints());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -1077,12 +1085,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         /* P1 plays {2H 2S 2C 2D} {3C 4C 5C 6C 7C} {4D 5D 6D 7D 8D} and wins! */
 
         //SERVER THREAD
-        GameServer gameServer_endGame = Config.startTestServer();
+        TestServer testServer_endGame = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1149,9 +1157,9 @@ public class UnitTests {
         TimeUnit.SECONDS.sleep(1);
 
         //test winner
-        assertEquals("A", gameServer_endGame.getWinner());
+        assertEquals("A", testServer_endGame.gameServer.getWinner());
 
-        gameServer_endGame.kill();
+        testServer_endGame.thread.join(); testServer_endGame.gameServer.kill();
 
     }
 
@@ -1163,7 +1171,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 3C 4C} from hand
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -1323,13 +1331,13 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 3C 4C} {8D 9D 10D} from hand
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1493,13 +1501,13 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
-//****************
+        testServer.thread.join(); testServer.gameServer.kill();
+
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 2H 2D} from hand
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1659,13 +1667,13 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 2H 2D} {8D 8H 8S 8C} from hand
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1830,13 +1838,13 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 2H 2D} {8D 9D 10D} from hand
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -2000,14 +2008,14 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
-//****************
+
         //setup for 1st turn P1 plays {JH QH KH}, P2 {JS QS KS} and P3 {JD QD KD}
         //start of turn 2: P1 then plays {2C 2H 2D}  {3C 3H 3D} {8C 9C 10C JC QC} from hand
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -2167,7 +2175,7 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 
     @Test
@@ -2177,7 +2185,7 @@ public class UnitTests {
         //P1 starts with {2C 2H 2D}  {3C 3H 3D} {8D 9D 10D} {8H 9H 10H} QC 7H in hand and chooses to draw
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2210,6 +2218,7 @@ public class UnitTests {
                         "(2) Draw Tile and End Turn\n" +
                         "(3) End Turn\n";
                 assertEquals(expected, player1.getOptions());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -2220,6 +2229,7 @@ public class UnitTests {
                 Player player2 = new Player("B");
                 player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player2.updateGame();
+                player2.sendUpdatedGame();
             }});
 
         //PLAYER 3 THREAD
@@ -2229,6 +2239,7 @@ public class UnitTests {
                 Player player3 = new Player("C");
                 player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player3.updateGame();
+                player3.sendUpdatedGame();
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2239,12 +2250,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         //P1 starts with 2C 2C 2D 3H 3S 3S 5H 6S 7D 9H 10H JC QS KS and has to draw
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(1);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -2276,6 +2287,7 @@ public class UnitTests {
                         "(1) Play Meld on Table\n" +
                         "(2) Draw Tile and End Turn\n";
                 assertEquals(expected, player1.getOptions());
+                player1.sendUpdatedGame();
             }
         });
 
@@ -2286,6 +2298,7 @@ public class UnitTests {
                 Player player2 = new Player("B");
                 player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player2.updateGame();
+                player2.sendUpdatedGame();
             }});
 
         //PLAYER 3 THREAD
@@ -2295,6 +2308,7 @@ public class UnitTests {
                 Player player3 = new Player("C");
                 player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player3.updateGame();
+                player3.sendUpdatedGame();
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2305,7 +2319,7 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
     }
 
@@ -2313,7 +2327,7 @@ public class UnitTests {
     @DisplayName("tests for declaring winner after all tiles played and reporting scores")
     public void playAllTilesAndScores() throws InterruptedException, IOException {
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(3);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2489,9 +2503,9 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        assertEquals("B", gameServer.getWinner());
+        assertEquals("B", testServer.gameServer.getWinner());
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 
     @Test
@@ -2499,7 +2513,7 @@ public class UnitTests {
     public void partialHandSetReuseTableSet() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2684,7 +2698,7 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 
     @Test
@@ -2692,7 +2706,7 @@ public class UnitTests {
     public void partialHandRunReuseTableSet() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2877,7 +2891,7 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 
     @Test
@@ -2887,7 +2901,7 @@ public class UnitTests {
         //reusing 7D from table
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2994,8 +3008,6 @@ public class UnitTests {
                         "|R1| " + "\n\n";
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -3040,10 +3052,7 @@ public class UnitTests {
                         "==========HAND==========" + "\n" +
                         "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
-
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -3054,12 +3063,12 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
 
         //reusing KD from table
 
         //SERVER THREAD
-        gameServer = Config.startTestServer();
+        testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -3166,8 +3175,6 @@ public class UnitTests {
                         "|R1| " + "\n\n";
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -3214,8 +3221,6 @@ public class UnitTests {
                 assertEquals(expected, player3.getGameState());
 
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -3226,7 +3231,7 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 
     @Test
@@ -3234,7 +3239,7 @@ public class UnitTests {
     public void partialHandRunReuseTableRun() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        GameServer gameServer = Config.startTestServer();
+        TestServer testServer = new TestServer(2);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -3402,6 +3407,6 @@ public class UnitTests {
         t3.start();
         TimeUnit.SECONDS.sleep(1);
 
-        gameServer.kill();
+        testServer.thread.join(); testServer.gameServer.kill();
     }
 }

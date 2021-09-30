@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 /*
     The GameServer class handles the server portion of the game
@@ -44,7 +45,7 @@ public class GameServer implements Serializable {
         GameServer sr = new GameServer();
 
         sr.acceptConnections();
-        sr.gameLoop();
+        sr.gameLoop(-1);
     }
 
     public void acceptConnections() throws ClassNotFoundException {
@@ -79,9 +80,10 @@ public class GameServer implements Serializable {
         ss.close();
     }
 
-    public void gameLoop() {
+    public void gameLoop(int numRounds) {
         try {
-            while (!game.isOver()) {
+            int counter = 0;
+            while (!game.isOver() && counter <= numRounds) {
                 for (int i = 0; i < numPlayers; ++i) {
                     System.out.println("PLAYER " + (i+1) + "'s turn");
                     playerServer[i].sendGameState();
@@ -96,7 +98,11 @@ public class GameServer implements Serializable {
                         }
                         break;
                     }
+                    counter++;
                 }
+            }
+            if (numRounds != -1) {
+                return;
             }
             System.out.println("Game is over and the winner is: " + getWinner());
             int[] finalScores = game.getScores();
@@ -122,7 +128,7 @@ public class GameServer implements Serializable {
         private ObjectOutputStream dOut;
         private int playerId;
 
-        public Server(Socket s, int playerid) {
+        public Server(Socket s, int playerid) throws SocketException {
             socket = s;
             playerId = playerid;
             try {
