@@ -107,13 +107,21 @@ public class Game implements Serializable {
     /* Creates new meld based on tiles from player's hand and table, then adds it to the table, then returns the new meld */
     public TileCollection createMeld(ArrayList<Tile> fromHand, ArrayList<String> fromTable) {
 
+        boolean checkBrokenRun = false;
+
         for (Tile t : fromHand)
             t.setSource("hand");
 
         ArrayList<Tile> tilesFromTable = new ArrayList<>();
         for (String str : fromTable) {
             String[] splitStr = str.split(":");
-            tilesFromTable.add(removeTileFromTable(Integer.parseInt(splitStr[0]), splitStr[1]));
+            if (table.get(Integer.parseInt(splitStr[0])-1).isRun())
+                checkBrokenRun = true;
+
+            Tile reusedTile = removeTileFromTable(Integer.parseInt(splitStr[0]), splitStr[1]);
+            tilesFromTable.add(reusedTile);
+            if (checkBrokenRun)
+                checkBrokenRun(Integer.parseInt(splitStr[0])-1);
         }
 
         for (Tile t : tilesFromTable)
@@ -129,6 +137,32 @@ public class Game implements Serializable {
     /* Removes Tile corresponding to String str from table */
     public Tile removeTileFromTable(int meldNumber, String str) {
         return table.get(meldNumber-1).remove(str);
+    }
+
+    /* Checks if tile on table reused breaks up a run, and adjusts table */
+    public void checkBrokenRun(int meldNumber) {
+
+        TileCollection affectedRun = table.get(meldNumber);
+
+        //first, check if still is run (case where either first or last tile was reused): do nothing
+        if (affectedRun.isRun())
+            return;
+
+        //case where taken from the middle: iterate until broken
+        TileCollection leftRun = new TileCollection();
+        for (int i = 0; i < affectedRun.getSize(); ++i) {
+            Tile currentTile = affectedRun.getTile(i);
+            leftRun.add(currentTile);
+            //check when it is no longer a valid run
+            if (leftRun.getSize() >= 3 && !leftRun.isRun()) {
+                leftRun.remove(currentTile.getColour()+currentTile.getNumber());
+                table.add(leftRun);
+                for (int j = 0; j < i; ++j) {
+                    affectedRun.remove(0);
+                }
+                return;
+            }
+        }
     }
 
 }

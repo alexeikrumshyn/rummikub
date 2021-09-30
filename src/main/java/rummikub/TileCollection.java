@@ -23,6 +23,16 @@ public class TileCollection implements Serializable {
         return tiles.size();
     }
 
+    /* Returns tile at position idx */
+    public Tile getTile(int idx) {
+        if (checkIfMeld && isRun()) {
+            arrangeRun();
+        } else {
+            Collections.sort(tiles);
+        }
+        return tiles.get(idx);
+    }
+
     /* Returns true if collection is a valid run, false otherwise */
     public boolean isRun() {
 
@@ -125,7 +135,11 @@ public class TileCollection implements Serializable {
 
     /* Removes Tile at index idx from the collection */
     public Tile remove(int idx) {
-        Collections.sort(tiles);
+        if (checkIfMeld && isRun()) {
+            arrangeRun();
+        } else {
+            Collections.sort(tiles);
+        }
         return tiles.remove(idx);
     }
 
