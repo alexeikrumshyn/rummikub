@@ -347,7 +347,7 @@ public class UnitTests {
     public void playerSequenceAndUI() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        TestServer testServer = new TestServer(2);
+        TestServer testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -1171,7 +1171,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 3C 4C} from hand
 
         //SERVER THREAD
-        TestServer testServer = new TestServer(2);
+        TestServer testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -1238,7 +1238,6 @@ public class UnitTests {
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
-                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1278,7 +1277,6 @@ public class UnitTests {
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
 
             }});
 
@@ -1319,8 +1317,6 @@ public class UnitTests {
                         "|O1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -1337,7 +1333,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 3C 4C} {8D 9D 10D} from hand
 
         //SERVER THREAD
-        testServer = new TestServer(2);
+        testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1408,7 +1404,6 @@ public class UnitTests {
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
-                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1448,8 +1443,6 @@ public class UnitTests {
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -1489,8 +1482,6 @@ public class UnitTests {
                         "|R1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -1507,7 +1498,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 2H 2D} from hand
 
         //SERVER THREAD
-        testServer = new TestServer(2);
+        testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1574,7 +1565,6 @@ public class UnitTests {
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
-                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1614,7 +1604,6 @@ public class UnitTests {
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
 
             }});
 
@@ -1655,8 +1644,6 @@ public class UnitTests {
                         "|B1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -1673,7 +1660,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 2H 2D} {8D 8H 8S 8C} from hand
 
         //SERVER THREAD
-        testServer = new TestServer(2);
+        testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1745,7 +1732,6 @@ public class UnitTests {
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
-                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1785,8 +1771,6 @@ public class UnitTests {
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -1826,8 +1810,6 @@ public class UnitTests {
                         "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -1844,7 +1826,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 2H 2D} {8D 9D 10D} from hand
 
         //SERVER THREAD
-        testServer = new TestServer(2);
+        testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -1915,7 +1897,6 @@ public class UnitTests {
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
-                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -1955,8 +1936,6 @@ public class UnitTests {
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -1996,8 +1975,6 @@ public class UnitTests {
                         "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2015,7 +1992,7 @@ public class UnitTests {
         //start of turn 2: P1 then plays {2C 2H 2D}  {3C 3H 3D} {8C 9C 10C JC QC} from hand
 
         //SERVER THREAD
-        testServer = new TestServer(2);
+        testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -2082,7 +2059,6 @@ public class UnitTests {
                 assertEquals(expected, player1.getGameState());
 
                 player1.sendUpdatedGame();
-                player1.updateGame();
             }});
 
         //PLAYER 2 THREAD
@@ -2122,8 +2098,6 @@ public class UnitTests {
 
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -2163,8 +2137,6 @@ public class UnitTests {
                         "|G1| " + "\n\n";
                 assertEquals(expected, player3.getGameState());
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2229,7 +2201,6 @@ public class UnitTests {
                 Player player2 = new Player("B");
                 player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player2.updateGame();
-                player2.sendUpdatedGame();
             }});
 
         //PLAYER 3 THREAD
@@ -2239,7 +2210,6 @@ public class UnitTests {
                 Player player3 = new Player("C");
                 player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player3.updateGame();
-                player3.sendUpdatedGame();
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2298,7 +2268,6 @@ public class UnitTests {
                 Player player2 = new Player("B");
                 player2.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player2.updateGame();
-                player2.sendUpdatedGame();
             }});
 
         //PLAYER 3 THREAD
@@ -2308,7 +2277,6 @@ public class UnitTests {
                 Player player3 = new Player("C");
                 player3.connectToClient(Config.GAME_SERVER_PORT_NUMBER);
                 player3.updateGame();
-                player3.sendUpdatedGame();
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2327,7 +2295,7 @@ public class UnitTests {
     @DisplayName("tests for declaring winner after all tiles played and reporting scores")
     public void playAllTilesAndScores() throws InterruptedException, IOException {
         //SERVER THREAD
-        TestServer testServer = new TestServer(3);
+        TestServer testServer = new TestServer(8);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2513,7 +2481,7 @@ public class UnitTests {
     public void partialHandSetReuseTableSet() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        TestServer testServer = new TestServer(2);
+        TestServer testServer = new TestServer(5);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2686,8 +2654,6 @@ public class UnitTests {
                 assertEquals(expected, player3.getGameState());
 
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2706,7 +2672,7 @@ public class UnitTests {
     public void partialHandRunReuseTableSet() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        TestServer testServer = new TestServer(2);
+        TestServer testServer = new TestServer(5);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -2879,8 +2845,6 @@ public class UnitTests {
                 assertEquals(expected, player3.getGameState());
 
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
@@ -2901,7 +2865,7 @@ public class UnitTests {
         //reusing 7D from table
 
         //SERVER THREAD
-        TestServer testServer = new TestServer(2);
+        TestServer testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -3068,7 +3032,7 @@ public class UnitTests {
         //reusing KD from table
 
         //SERVER THREAD
-        testServer = new TestServer(2);
+        testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         t1 = new Thread(new Runnable() {
@@ -3239,7 +3203,7 @@ public class UnitTests {
     public void partialHandRunReuseTableRun() throws InterruptedException, IOException {
 
         //SERVER THREAD
-        TestServer testServer = new TestServer(2);
+        TestServer testServer = new TestServer(4);
 
         //PLAYER 1 THREAD
         Thread t1 = new Thread(new Runnable() {
@@ -3347,8 +3311,6 @@ public class UnitTests {
                         "|R1| " + "\n\n";
                 assertEquals(expected, player2.getGameState());
                 player2.sendUpdatedGame();
-                player2.updateGame();
-
             }});
 
         //PLAYER 3 THREAD
@@ -3395,8 +3357,6 @@ public class UnitTests {
                 assertEquals(expected, player3.getGameState());
 
                 player3.sendUpdatedGame();
-                player3.updateGame();
-
             }});
 
         //start threads with slight delay in between to ensure proper order
