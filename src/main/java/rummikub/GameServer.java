@@ -45,7 +45,7 @@ public class GameServer implements Serializable {
         GameServer sr = new GameServer();
 
         sr.acceptConnections();
-        sr.gameLoop(-1);
+        sr.gameLoop(Integer.MAX_VALUE);
     }
 
     public void acceptConnections() throws ClassNotFoundException {
