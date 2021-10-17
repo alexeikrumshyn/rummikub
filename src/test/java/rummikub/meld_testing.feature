@@ -16,3 +16,21 @@ Feature: Test validity of different melds
       | "R5 G5 G5 O5" 	  |	""		                    | "R5 G5 G5 O5 ? ? ? "          |
       | "R5 G5 B5 B5 O5"  |	""		                    | "R5 G5 B5 B5 O5 ? ? ? "       |
       | "R5 G5" 	      |	""		                    | "R5 G5 ? ? ? "                |
+
+  @setsWithJokers
+  Scenario Outline: Test Validity of Sets with Jokers
+    Given Test Server is started
+    When Player 1 plays <tiles>
+    Then table contains <table>
+    And Player 1 hand contains <hand>
+    Examples:
+      | tiles             | table                       | hand                          |
+      | "R5 G5 *" 	      | "{ *R5 ** *G5 }\n"		    | ""                            |
+      | "R5 * O5" 	      | "{ *R5 ** *O5 }\n"		    | ""                            |
+      | "* G5 O5" 	      | "{ ** *G5 *O5 }\n"	        | ""                            |
+      | "R5 B5 G5 *" 	  |	"{ *R5 *B5 *G5 ** }\n"		| ""                            |
+      | "R5 B5 * O5" 	  |	"{ *R5 *B5 ** *O5 }\n"		| ""                            |
+      | "* B5 G5 O5" 	  |	"{ ** *B5 *G5 *O5 }\n"		| ""                            |
+      | "* * G5"          |	"{ ** ** *G5 }\n"		    | ""                            |
+      | "* * G5 O5"       |	"{ ** ** *G5 *O5 }\n"		| ""                            |
+      | "*"               |	""		                    | "? ? ? * "                    |
