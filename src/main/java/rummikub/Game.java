@@ -34,6 +34,8 @@ public class Game implements Serializable {
                 stock.add(new Tile(clr,Integer.toString(i)));
             }
         }
+        stock.add(new Tile("*","*"));
+        stock.add(new Tile("*","*"));
     }
 
     /* Returns true if the game is over, false otherwise */

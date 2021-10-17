@@ -97,17 +97,45 @@ public class TileCollection implements Serializable {
 
         for (int i = 0; i < tiles.size(); ++i) {
             //check if all numbers equal to first number
-            if (!tiles.get(i).getNumber().equals(tiles.get(0).getNumber())) {
+            if (!tiles.get(i).getNumber().equals(tiles.get(0).getNumber()) && !tiles.get(i).getNumber().equals("*") && !tiles.get(0).getNumber().equals("*")) {
                 return false;
             }
             //check if all colours unique
             for (int j = i+1; j < tiles.size(); ++j) {
-                if (tiles.get(i).getColour().equals(tiles.get(j).getColour())) {
+                if (tiles.get(i).getColour().equals(tiles.get(j).getColour()) && !tiles.get(i).getColour().equals("*") && !tiles.get(j).getColour().equals("*")) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    /* Orders tiles to accommodate sets with jokers */
+    public void arrangeSet() {
+        if (countJokers() == 0)
+            return;
+        Collections.sort(tiles);
+        ArrayList<String> colourOrder = new ArrayList<>();
+        colourOrder.add("R");
+        colourOrder.add("B");
+        colourOrder.add("G");
+        colourOrder.add("O");
+
+        for (int i = 0; i < tiles.size(); ++i) {
+            if (!tiles.get(i).getColour().equals(colourOrder.get(i)) && tiles.get(tiles.size()-1).getColour().equals("*")) {
+                tiles.add(i, tiles.remove(tiles.size() - 1));
+            }
+        }
+    }
+
+    /* Returns number of jokers in collection */
+    public int countJokers() {
+        int jokerCounter = 0;
+        for (Tile t : tiles) {
+            if (t.getNumber().equals("*") && t.getColour().equals("*"))
+                jokerCounter++;
+        }
+        return jokerCounter;
     }
 
     /* Returns true if collection is a valid meld, false otherwise */
@@ -119,11 +147,25 @@ public class TileCollection implements Serializable {
     public int getPoints() {
         int pts = 0;
         for (Tile t: tiles) {
-            int tileNum = Integer.parseInt(t.getNumber());
-            if (tileNum > 10)
-                pts += 10;
-            else
-                pts += tileNum;
+            String tileNumStr = t.getNumber();
+            //check for joker
+            if (tileNumStr.equals("*")) {
+                if (isSet()) {
+                    for (Tile tile : tiles)
+                        if (!tile.getNumber().equals("*")) { pts += Integer.parseInt(tile.getNumber()); }
+                } else if (isRun()) {
+                    if (tiles.indexOf(t) == 0)
+                        pts += Integer.parseInt(tiles.get(tiles.indexOf(t)+1).getNumber()) - 1;
+                    else
+                        pts += Integer.parseInt(tiles.get(tiles.indexOf(t)-1).getNumber()) + 1;
+                }
+            } else {
+                int tileNum = Integer.parseInt(tileNumStr);
+                if (tileNum > 10)
+                    pts += 10;
+                else
+                    pts += tileNum;
+            }
         }
         return pts;
     }
@@ -135,9 +177,17 @@ public class TileCollection implements Serializable {
 
     /* Removes Tile corresponding to str (for example: "G8") from the collection */
     public Tile remove(String str) {
-        //first, parse str into colour and number
-        String clr = str.substring(0,1);
-        String num = str.substring(1);
+
+        String clr;
+        String num;
+        //check for joker
+        if (str.equals("*")) {
+            clr = "*";
+            num = "*";
+        } else{
+            clr = str.substring(0, 1);
+            num = str.substring(1);
+        }
         for (Tile t: tiles) {
             if (t.getColour().equals(clr) && t.getNumber().equals(num)) {
                 Tile toRm = t;
@@ -162,6 +212,8 @@ public class TileCollection implements Serializable {
     public String toString() {
         if (checkIfMeld && isRun()) {
             arrangeRun();
+        } else if (checkIfMeld && isSet()){
+            arrangeSet();
         } else {
             Collections.sort(tiles);
         }

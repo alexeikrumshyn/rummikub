@@ -33,6 +33,15 @@ public class Tile  implements Comparable<Tile>, Serializable {
 
     @Override
     public int compareTo(Tile t2) {
+
+        if (this.colour.equals("*") && this.number.equals("*") && !t2.colour.equals("*") && !t2.number.equals("*")) {
+            return 1;
+        } else if (!this.colour.equals("*") && !this.number.equals("*") && t2.colour.equals("*") && t2.number.equals("*")) {
+            return -1;
+        } else if (this.colour.equals("*") && this.number.equals("*") && t2.colour.equals("*") && t2.number.equals("*")) {
+            return 0;
+        }
+
         if (this.getColour().equals(t2.getColour())) {
             if (Integer.parseInt(this.getNumber()) < Integer.parseInt(t2.getNumber())) {
                 return -1;
@@ -62,7 +71,11 @@ public class Tile  implements Comparable<Tile>, Serializable {
         } else if (source == "table") {
             str += "!";
         }
-        str += "|" + getColour() + getNumber() + "|";
+
+        if (this.colour.equals("*") && this.number.equals("*"))
+            str += "|" + "*" + "|";
+        else
+            str += "|" + this.colour + this.number + "|";
         return str;
     }
 }
