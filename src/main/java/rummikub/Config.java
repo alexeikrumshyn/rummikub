@@ -7,4 +7,5 @@ public class Config {
     public static final int MAX_PLAYERS = 3;
     public static final int INITIAL_HAND_SIZE = 14;
     public static final int INITIAL_POINTS_THRESHOLD = 30;
+    public static final int PENALTY_TILES = 3;
 }

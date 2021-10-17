@@ -91,6 +91,12 @@ public class Player implements Serializable {
         return game.createMeld(fromHand, fromTable);
     }
 
+    /* Tests whether given tiles are a valid meld */
+    public boolean isValidMeld(String str) {
+        TileCollection testCollection = new TileCollection(str);
+        return testCollection.isMeld();
+    }
+
     /* Returns the player's hand */
     public String getHand() {
         return hand.toString();
@@ -154,12 +160,22 @@ public class Player implements Serializable {
         return opts;
     }
 
+    /* Logic for invalid move */
+    public void handleInvalidMove(Game beforeTurn) {
+        game = beforeTurn; //reset everything
+        for (int i = 0; i < Config.PENALTY_TILES; ++i)
+            drawTile();
+        System.out.println("Invalid meld played - three tiles have been drawn as penalty.");
+    }
+
     /* Prompts the user for an action for their turn */
     public void getAction() {
         Scanner scn = new Scanner(System.in).useDelimiter("\n");
         String action = "";
         mustDrawTile = true;
         ArrayList<TileCollection> meldsPlayed = new ArrayList<>();
+        Game beforeTurn = new Game();
+        beforeTurn = game;
 
         while (true) {
             if (action.equals("end_turn"))
@@ -174,6 +190,10 @@ public class Player implements Serializable {
                     System.out.println("Type Meld as space-separated tiles (eg. R5 B5 G5): ");
                     System.out.println("Note: if reusing tile from table, specify from which meld it is coming from, then a colon, then the tile (eg. 1:R5) ");
                     String meldStr = scn.next();
+                    if (!isValidMeld(meldStr)) {
+                        handleInvalidMove(beforeTurn);
+                        return;
+                    }
                     TileCollection played = playMeld(meldStr);
                     meldsPlayed.add(played);
                     mustDrawTile = false;

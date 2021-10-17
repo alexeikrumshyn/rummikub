@@ -19,6 +19,21 @@ public class TileCollection implements Serializable {
         checkIfMeld = true;
     }
 
+    public TileCollection(String str) {
+        tiles = new ArrayList<>();
+        String[] tilesStr = str.split("\\s+");
+        for (String tileStr : tilesStr) {
+            if (tileStr.equals("*")) {
+                this.add(new Tile("*", "*"));
+            } else {
+                String clr = tileStr.substring(0, 1);
+                String num = tileStr.substring(1);
+                this.add(new Tile(clr,num));
+            }
+        }
+        checkIfMeld = true;
+    }
+
     public int getSize() {
         return tiles.size();
     }
