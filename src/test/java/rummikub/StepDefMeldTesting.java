@@ -9,19 +9,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StepDefMeldTesting {
 
     LocalTestServer srv;
-    TileCollection testCollection;
 
     @Given("Test Server is started")
     public void test_server_is_started() {
         srv = new LocalTestServer();
     }
 
-    @When("Player {int} plays {string}")
-    public void player_plays(int pNum, String tiles) {
+    @Given("Player {int} hand starts with {string}")
+    public void player_hand_starts_with(int pNum, String tiles) {
         String[] tilesStr = tiles.split(" ");
         for (String str: tilesStr) {
             srv.players[pNum-1].drawTile(str);
         }
+    }
+
+    @When("Player {int} plays {string}")
+    public void player_plays(int pNum, String tiles) {
         String inString = "1\n" + tiles + "\n" + "3\n";
         ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
         System.setIn(in);
