@@ -54,19 +54,56 @@ public class TileCollection implements Serializable {
         if (tiles.size() < 3) {
             return false;
         }
+        //special case of two jokers with one tile - consider it a set
+        if (countJokers() == 2 && tiles.size() == 3)
+            return false;
 
+        //check for first colour in set (could be a joker)
+        int firstClr = 0;
+        for (Tile t : tiles) {
+            if (t.getColour().equals("*")) firstClr++;
+            else break;
+        }
         //check if all colours equal to first colour
         for (int i = 0; i < tiles.size(); ++i) {
-            if (!tiles.get(i).getColour().equals(tiles.get(0).getColour())) {
+            if (!tiles.get(i).getColour().equals(tiles.get(firstClr).getColour()) && !tiles.get(i).getColour().equals("*")) {
                 return false;
             }
         }
 
         arrangeRun();
         for (int i = 0; i < tiles.size()-1; ++i) {
+
+            String nextNumStr = tiles.get(i+1).getNumber();
+            String currentNumStr = tiles.get(i).getNumber();
+
+            //check number two indices later in joker case
+            if (i < tiles.size()-2 && nextNumStr.equals("*") && !currentNumStr.equals("*") && !tiles.get(i+2).getNumber().equals("*")) {
+                int currentNum = Integer.parseInt(currentNumStr);
+                int nextNextNum = Integer.parseInt(tiles.get(i+2).getNumber());
+                int diff = Math.abs((nextNextNum - currentNum)%13);
+                if (diff != 11 && diff != 2) {
+                    return false;
+                }
+            }
+            //check number three indices later in back-to-back joker case (e.g. R2 * * R5)
+            if (i < tiles.size()-3 && nextNumStr.equals("*")) {
+                if (tiles.get(i+2).getNumber().equals("*")) {
+                    int currentNum = Integer.parseInt(currentNumStr);
+                    int nextNextNextNum = Integer.parseInt(tiles.get(i + 3).getNumber());
+                    int diff = Math.abs((nextNextNextNum - currentNum) % 13);
+                    if (diff != 10 && diff != 3) {
+                        return false;
+                    }
+                }
+            }
+            if (currentNumStr.equals("*") || nextNumStr.equals("*")) {
+                continue;
+            }
+
             //check if numbers are sequential - considering special case of 13 (King) wrapping around to 1 (Ace)
-            int nextNum = Integer.parseInt(tiles.get(i+1).getNumber());
-            int currentNum = Integer.parseInt(tiles.get(i).getNumber());
+            int nextNum = Integer.parseInt(nextNumStr);
+            int currentNum = Integer.parseInt(currentNumStr);
 
             if (Math.abs((nextNum - currentNum)%13) != 1 && !(nextNum == 1 && currentNum == 13)) {
                 return false;
@@ -75,13 +112,60 @@ public class TileCollection implements Serializable {
         return true;
     }
 
-    /* Orders tiles to accommodate runs that wrap around (such as Q K A) */
+    /* Orders tiles to accommodate runs that wrap around (such as Q K A) and joker cases */
     public void arrangeRun() {
+
+        //preserve jokers at beginning if they started there
+        int jokersAtBeginning = 0;
+        for (int i = 0; i < tiles.size(); ++i) {
+            if (tiles.get(i).getNumber().equals("*"))
+                jokersAtBeginning++;
+            else
+                break;
+        }
         Collections.sort(tiles);
-        if (tiles.get(tiles.size()-1).getNumber().equals("13") && tiles.get(0).getNumber().equals("1")) {
+        //put jokers back to beginning after sort
+        for (int i = 0; i < jokersAtBeginning; ++i)
+            tiles.add(0, tiles.remove(tiles.size() - 1));
+
+        //place joker(s) in right spot
+        if (countJokers() > 0 && countJokers() > jokersAtBeginning) {
+            for (int i = jokersAtBeginning; i < tiles.size()-1; ++i) {
+                if (tiles.get(i+1).getNumber().equals("*"))
+                    break;
+                int nextNum = Integer.parseInt(tiles.get(i+1).getNumber());
+                int currentNum = Integer.parseInt(tiles.get(i).getNumber());
+                if (Math.abs((nextNum - currentNum)%13) != 1 && tiles.get(tiles.size()-1).getNumber().equals("*")) {
+                    tiles.add(i + 1, tiles.remove(tiles.size() - 1));
+                    //check back-to-back joker case
+                    if (i < tiles.size()-2) {
+                        int nextNextNum = Integer.parseInt(tiles.get(i + 2).getNumber());
+                        if (Math.abs((nextNextNum - currentNum)%13) != 2 && tiles.get(tiles.size()-1).getNumber().equals("*"))
+                            tiles.add(i + 2, tiles.remove(tiles.size() - 1));
+                    }
+                    break;
+                }
+            }
+        }
+        //wraparound cases
+        boolean normal_case = (tiles.get(tiles.size()-1).getNumber().equals("13") && tiles.get(0).getNumber().equals("1") && tiles.size() != 13);
+        if (normal_case) {
             for (int i = 0; i < tiles.size()-1; ++i) {
                 tiles.add(tiles.remove(0)); //move first tile to back
+                if (tiles.get(0).getNumber().equals("*") || tiles.get(tiles.size()-1).getNumber().equals("*")) {
+                    break;
+                }
                 if (Math.abs(Integer.parseInt(tiles.get(0).getNumber()) - Integer.parseInt(tiles.get(tiles.size()-1).getNumber())%13) != 1) {
+                    break;
+                }
+            }
+        }
+        boolean joker_case = (tiles.get(0).getNumber().equals("2") && countJokers() == 1 && tiles.get(tiles.size()-1).getNumber().equals("13")); //e.g. K * 2 is initially sorted as 2 K *
+        if (joker_case) {
+            for (int i = 0; i < tiles.size()-1; ++i) {
+                tiles.add(tiles.remove(0)); //move first tile to back
+                if (tiles.get(0).getNumber().equals("*")) {
+                    tiles.add(tiles.size()-2-i, tiles.remove(0));
                     break;
                 }
             }
@@ -95,9 +179,20 @@ public class TileCollection implements Serializable {
             return false;
         }
 
+        //special case of two jokers with one tile - consider it a set
+        if (countJokers() == 2 && tiles.size() == 3)
+            return true;
+
+        //check for first number in set (could be a joker)
+        int firstClr = 0;
+        for (Tile t : tiles) {
+            if (t.getColour().equals("*")) firstClr++;
+            else break;
+        }
+
         for (int i = 0; i < tiles.size(); ++i) {
             //check if all numbers equal to first number
-            if (!tiles.get(i).getNumber().equals(tiles.get(0).getNumber()) && !tiles.get(i).getNumber().equals("*") && !tiles.get(0).getNumber().equals("*")) {
+            if (!tiles.get(i).getNumber().equals(tiles.get(firstClr).getNumber()) && !tiles.get(i).getNumber().equals("*")) {
                 return false;
             }
             //check if all colours unique
@@ -146,18 +241,24 @@ public class TileCollection implements Serializable {
     /* Returns the total number of points in collection */
     public int getPoints() {
         int pts = 0;
-        for (Tile t: tiles) {
-            String tileNumStr = t.getNumber();
+        for (int i = 0; i < tiles.size(); ++i) {
+            String tileNumStr = tiles.get(i).getNumber();
             //check for joker
             if (tileNumStr.equals("*")) {
                 if (isSet()) {
                     for (Tile tile : tiles)
                         if (!tile.getNumber().equals("*")) { pts += Integer.parseInt(tile.getNumber()); }
                 } else if (isRun()) {
-                    if (tiles.indexOf(t) == 0)
-                        pts += Integer.parseInt(tiles.get(tiles.indexOf(t)+1).getNumber()) - 1;
-                    else
-                        pts += Integer.parseInt(tiles.get(tiles.indexOf(t)-1).getNumber()) + 1;
+                    if (tiles.get(i).getNumber().equals("*")) {
+                        //look before
+                        if (i != 0 && !tiles.get(i-1).getNumber().equals("*"))
+                            pts += Integer.parseInt(tiles.get(i-1).getNumber()) + 1;
+                        //look after
+                        else if (i != tiles.size()-1 && !tiles.get(i+1).getNumber().equals("*"))
+                            pts += Integer.parseInt(tiles.get(i+1).getNumber()) - 1;
+                    } else {
+                        pts += Integer.parseInt(tiles.get(i).getNumber());
+                    }
                 }
             } else {
                 int tileNum = Integer.parseInt(tileNumStr);
