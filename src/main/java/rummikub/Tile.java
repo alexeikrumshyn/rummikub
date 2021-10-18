@@ -15,6 +15,12 @@ public class Tile  implements Comparable<Tile>, Serializable {
         source = "neutral";
     }
 
+    public Tile(Tile t) {
+        colour = t.colour;
+        number = t.number;
+        source = "neutral";
+    }
+
     public String getColour() {
         return colour;
     }

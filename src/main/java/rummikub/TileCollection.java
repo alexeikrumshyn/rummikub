@@ -34,6 +34,14 @@ public class TileCollection implements Serializable {
         checkIfMeld = true;
     }
 
+    /* Deep copy constructor */
+    public TileCollection(TileCollection tc) {
+        checkIfMeld = tc.checkIfMeld;
+        tiles = new ArrayList<>();
+        for (int i = 0; i < tc.getSize(); ++i)
+            tiles.add(new Tile(tc.getTile(i)));
+    }
+
     public int getSize() {
         return tiles.size();
     }

@@ -161,11 +161,11 @@ public class Player implements Serializable {
     }
 
     /* Logic for invalid move */
-    public void handleInvalidMove(Game beforeTurn) {
-        game = beforeTurn; //reset everything
+    public void handleInvalidMove(Game beforeTurn, TileCollection handBeforeTurn) {
+        game = new Game(beforeTurn); //reset everything
+        hand = new TileCollection(handBeforeTurn);
         for (int i = 0; i < Config.PENALTY_TILES; ++i)
             drawTile();
-        System.out.println("Invalid meld played - three tiles have been drawn as penalty.");
     }
 
     /* Prompts the user for an action for their turn */
@@ -174,8 +174,8 @@ public class Player implements Serializable {
         String action = "";
         mustDrawTile = true;
         ArrayList<TileCollection> meldsPlayed = new ArrayList<>();
-        Game beforeTurn = new Game();
-        beforeTurn = game;
+        Game beforeTurn = new Game(game);
+        TileCollection handBeforeTurn = new TileCollection(hand);
 
         while (true) {
             if (action.equals("end_turn"))
@@ -191,7 +191,8 @@ public class Player implements Serializable {
                     System.out.println("Note: if reusing tile from table, specify from which meld it is coming from, then a colon, then the tile (eg. 1:R5) ");
                     String meldStr = scn.next();
                     if (!isValidMeld(meldStr)) {
-                        handleInvalidMove(beforeTurn);
+                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        System.out.println("Invalid meld played - three tiles have been drawn as penalty.");
                         return;
                     }
                     TileCollection played = playMeld(meldStr);
@@ -208,8 +209,14 @@ public class Player implements Serializable {
             }
         }
         if (action.equals("end_turn")) {
-            if (!hasInitialPoints)
+            if (!hasInitialPoints) {
                 checkInitialPoints(meldsPlayed);
+                //if still not reached initial points, undo moves and draw penalty tiles
+                if (meldsPlayed.size() != 0 && !hasInitialPoints) {
+                    System.out.println("Your first meld(s) did not reach " + Config.INITIAL_POINTS_THRESHOLD + " points - three tiles have been drawn as penalty.");
+                    handleInvalidMove(beforeTurn, handBeforeTurn);
+                }
+            }
 
             if (hand.toString().equals("")) {
                 game.setWinner(name);

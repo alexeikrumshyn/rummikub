@@ -19,6 +19,20 @@ public class Game implements Serializable {
         scores = new int[]{0, 0, 0};
     }
 
+    /* Deep copy constructor */
+    public Game(Game g) {
+        stock = new TileCollection(g.stock);
+
+        table = new ArrayList<>();
+        for (int i = 0; i < g.table.size(); ++i)
+            table.add(new TileCollection(g.table.get(i)));
+
+        isOver = g.isOver;
+        scores = new int[]{0, 0, 0};
+        for (int i = 0; i < g.scores.length; ++i)
+            scores[i] = g.scores[i];
+    }
+
     /* Creates the initial collection of tiles to draw from */
     public void createStock() {
         ArrayList<String> colours = new ArrayList<>();
