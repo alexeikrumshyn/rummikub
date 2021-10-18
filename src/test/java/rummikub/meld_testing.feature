@@ -6,6 +6,7 @@ Feature: Test validity of different melds
   Scenario Outline: Test Validity of Basic Sets
     Given Test Server is started
     And Player 1 hand starts with <initialHand>
+    And Player 1 has played initial points
     When Player 1 plays <tiles>
     Then table contains <table>
     And Player 1 hand contains <hand>
@@ -22,6 +23,7 @@ Feature: Test validity of different melds
   Scenario Outline: Test Validity of Sets with Jokers
     Given Test Server is started
     And Player 1 hand starts with <initialHand>
+    And Player 1 has played initial points
     When Player 1 plays <tiles>
     Then table contains <table>
     And Player 1 hand contains <hand>
@@ -41,6 +43,7 @@ Feature: Test validity of different melds
   Scenario Outline: Test Validity of Basic Runs
     Given Test Server is started
     And Player 1 hand starts with <initialHand>
+    And Player 1 has played initial points
     When Player 1 plays <tiles>
     Then table contains <table>
     And Player 1 hand contains <hand>
@@ -58,6 +61,7 @@ Feature: Test validity of different melds
   Scenario Outline: Test Validity of Runs with Jokers
     Given Test Server is started
     And Player 1 hand starts with <initialHand>
+    And Player 1 has played initial points
     When Player 1 plays <tiles>
     Then table contains <table>
     And Player 1 hand contains <hand>

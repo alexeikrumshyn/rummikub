@@ -23,6 +23,11 @@ public class StepDefMeldTesting {
         }
     }
 
+    @Given("Player {int} has played initial points")
+    public void player_has_played_initial_points(int pNum) {
+        srv.players[pNum-1].hasInitialPoints = true;
+    }
+
     @When("Player {int} plays {string}")
     public void player_plays(int pNum, String tiles) {
         String[] meldsPlayed = tiles.split(",");
