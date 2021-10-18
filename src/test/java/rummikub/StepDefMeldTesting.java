@@ -25,10 +25,16 @@ public class StepDefMeldTesting {
 
     @When("Player {int} plays {string}")
     public void player_plays(int pNum, String tiles) {
-        String inString = "1\n" + tiles + "\n" + "3\n";
+        String[] meldsPlayed = tiles.split(",");
+        String inString = "";
+        for (String meld : meldsPlayed) {
+            inString += "1\n" + meld + "\n";
+        }
+        inString += "3\n";
         ByteArrayInputStream in = new ByteArrayInputStream((inString).getBytes());
         System.setIn(in);
         srv.players[pNum-1].getAction();
+        srv.game = srv.players[pNum-1].game;
     }
 
     @Then("table contains {string}")
