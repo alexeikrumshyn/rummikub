@@ -28,6 +28,33 @@ public class StepDefMeldTesting {
         srv.players[pNum-1].hasInitialPoints = true;
     }
 
+    @When("Player {int} chooses to draw")
+    public void player_chooses_to_draw(int pNum) {
+        String expected = "Select an action: \n" +
+                "(1) Play Meld on Table\n" +
+                "(2) Draw Tile and End Turn\n" +
+                "(3) End Turn\n";
+        assertEquals(expected, srv.players[pNum-1].getOptions());
+
+        ByteArrayInputStream in = new ByteArrayInputStream(("2\n").getBytes());
+        System.setIn(in);
+        srv.players[pNum-1].getAction();
+        srv.game = srv.players[pNum-1].game;
+    }
+
+    @When("Player {int} has to draw")
+    public void player_has_to_draw(int pNum) {
+        String expected = "Select an action: \n" +
+                "(1) Play Meld on Table\n" +
+                "(2) Draw Tile and End Turn\n";
+        assertEquals(expected, srv.players[pNum-1].getOptions());
+
+        ByteArrayInputStream in = new ByteArrayInputStream(("2\n").getBytes());
+        System.setIn(in);
+        srv.players[pNum-1].getAction();
+        srv.game = srv.players[pNum-1].game;
+    }
+
     @When("Player {int} plays {string}")
     public void player_plays(int pNum, String tiles) {
         String[] meldsPlayed = tiles.split(",");
