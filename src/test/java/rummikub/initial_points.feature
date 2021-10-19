@@ -45,8 +45,8 @@ Feature: Test if first play meets initial point threshold
     Then table contains <table>
     And Player 1 hand contains <hand>
     Examples:
-      | initialHand              | tiles                 | table                                     | hand          |
-      | "R3 R4 R5 R5 R6 B5 G5"   | "R4 R5 R6,R5 B5 G5"   | "{ *R4 *R5 *R6 }\n{ *R5 *B5 *G5 }\n"      | "R3 ? "       |
+      | initialHand              | tiles                 | table                               | hand          |
+      | "R3 R4 R5 R5 R6 B5 G5"   | "R4 R5 R6,R5 B5 G5"   | "{ R4 R5 R6 }\n{ R5 B5 G5 }\n"      | "R3 ? "       |
 
   @havingToDraw
   Scenario: Test Player Having to Draw
@@ -55,3 +55,21 @@ Feature: Test if first play meets initial point threshold
     When Player 1 has to draw
     Then table contains ""
     And Player 1 hand contains "R1 R5 B7 ? "
+
+  @tableReuse
+  Scenario Outline: Test Table Reuse Before and After Initial Points
+    Given Test Server is started
+    And Player 1 hand starts with "R1 R10 R11 R12 R13"
+    And Player 2 hand starts with <p2hand>
+    And Player 3 hand starts with "O1 O2 O3"
+    When Player 1 plays "R10 R11 R12 R13"
+    And Player 2 plays <p2play1>
+    And Player 3 has to draw
+    And Player 1 chooses to draw
+    And Player 2 plays <p2play2>
+    Then table contains <table>
+    And Player 2 hand contains <hand>
+    Examples:
+      | p2hand                   | p2play1         | p2play2               | table                                                       | hand                                |
+      | "R1 R11 B10 B11 G11 O10" | "R11 B11 G11"   | "1:R10 B10 O10"       | "{ R11 R12 R13 }\n{ R11 B11 G11 }\n{ !R10 *B10 *O10 }\n"    | "R1 "                               |
+      | "R1 B1 B10 G1 O10 O1"    | "1:R10 B10 O10" | "R1 B1 O1"            | "{ R10 R11 R12 R13 }\n"                                     | "R1 B1 B10 G1 O1 O10 ? ? ? ? ? ? "  |
