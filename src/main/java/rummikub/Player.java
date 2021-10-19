@@ -93,6 +93,8 @@ public class Player implements Serializable {
 
     /* Tests whether given tiles are a valid meld */
     public boolean isValidMeld(String str) {
+        //remove table reuse indicators
+        str = str.replaceAll("\\d:", "");
         TileCollection testCollection = new TileCollection(str);
         return testCollection.isMeld();
     }
@@ -170,6 +172,7 @@ public class Player implements Serializable {
 
     /* Prompts the user for an action for their turn */
     public void getAction() {
+        game.resetTableTileSources();
         Scanner scn = new Scanner(System.in).useDelimiter("\n");
         String action = "";
         mustDrawTile = true;
@@ -190,6 +193,11 @@ public class Player implements Serializable {
                     System.out.println("Type Meld as space-separated tiles (eg. R5 B5 G5): ");
                     System.out.println("Note: if reusing tile from table, specify from which meld it is coming from, then a colon, then the tile (eg. 1:R5) ");
                     String meldStr = scn.next();
+                    if (meldStr.contains(":") && !hasInitialPoints) {
+                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        System.out.println("You cannot reuse tiles from table until your initial " + Config.INITIAL_POINTS_THRESHOLD + " points have been played - three tiles have been drawn as penalty.");
+                        return;
+                    }
                     if (!isValidMeld(meldStr)) {
                         handleInvalidMove(beforeTurn, handBeforeTurn);
                         System.out.println("Invalid meld played - three tiles have been drawn as penalty.");

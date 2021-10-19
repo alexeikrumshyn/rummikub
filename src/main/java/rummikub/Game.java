@@ -157,6 +157,13 @@ public class Game implements Serializable {
         return table.get(meldNumber-1).remove(str);
     }
 
+    /* Resets all tiles on table to be from neutral source */
+    public void resetTableTileSources() {
+        for (TileCollection c : table) {
+            c.resetTileSources();
+        }
+    }
+
     /* Checks if tile on table reused breaks up a run, and adjusts table */
     public void checkBrokenRun(int meldNumber) {
 

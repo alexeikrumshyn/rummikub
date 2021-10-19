@@ -215,9 +215,9 @@ public class TileCollection implements Serializable {
 
     /* Orders tiles to accommodate sets with jokers */
     public void arrangeSet() {
+        Collections.sort(tiles);
         if (countJokers() == 0)
             return;
-        Collections.sort(tiles);
         ArrayList<String> colourOrder = new ArrayList<>();
         colourOrder.add("R");
         colourOrder.add("B");
@@ -315,6 +315,12 @@ public class TileCollection implements Serializable {
             Collections.sort(tiles);
         }
         return tiles.remove(idx);
+    }
+
+    /* Resets all tiles in collection to neutral source */
+    public void resetTileSources() {
+        for (Tile t : tiles)
+            t.setSource("neutral");
     }
 
     @Override
