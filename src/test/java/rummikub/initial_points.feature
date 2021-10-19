@@ -35,3 +35,23 @@ Feature: Test if first play meets initial point threshold
       | "R8 R9 R10 R11 B9 B11 O9 O11 *"   | "* R9 R10"            | ""                                        | "R8 R9 R10 R11 B9 B11 O9 O11 * ? ? ? "|
       | "R8 R9 R10 R11 B9 B11 O9 O11 *"   | "R9 * O9"             | ""                                        | "R8 R9 R10 R11 B9 B11 O9 O11 * ? ? ? "|
       | "R3 R4 R5 R5 R6 B5 G5 *"          | "R3 R4 R5,* B5 G5"    | ""                                        | "R3 R4 R5 R5 R6 B5 G5 * ? ? ? "       |
+
+  @choosingToDraw
+  Scenario Outline: Test Player Choosing to Draw
+    Given Test Server is started
+    And Player 1 hand starts with <initialHand>
+    When Player 1 plays <tiles>
+    And Player 1 chooses to draw
+    Then table contains <table>
+    And Player 1 hand contains <hand>
+    Examples:
+      | initialHand              | tiles                 | table                                     | hand          |
+      | "R3 R4 R5 R5 R6 B5 G5"   | "R4 R5 R6,R5 B5 G5"   | "{ *R4 *R5 *R6 }\n{ *R5 *B5 *G5 }\n"      | "R3 ? "       |
+
+  @havingToDraw
+  Scenario: Test Player Having to Draw
+    Given Test Server is started
+    And Player 1 hand starts with "R1 R5 B7"
+    When Player 1 has to draw
+    Then table contains ""
+    And Player 1 hand contains "R1 R5 B7 ? "
