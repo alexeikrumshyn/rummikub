@@ -255,7 +255,7 @@ public class TileCollection implements Serializable {
             if (tileNumStr.equals("*")) {
                 if (isSet()) {
                     for (Tile tile : tiles)
-                        if (!tile.getNumber().equals("*")) { pts += Integer.parseInt(tile.getNumber()); }
+                        if (!tile.getNumber().equals("*")) { pts += Integer.parseInt(tile.getNumber()); break; }
                 } else if (isRun()) {
                     if (tiles.get(i).getNumber().equals("*")) {
                         //look before
