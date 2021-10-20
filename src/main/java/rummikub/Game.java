@@ -1,6 +1,7 @@
 package rummikub;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -203,4 +204,19 @@ public class Game implements Serializable {
         }
     }
 
+    /* Checks if melds on table are valid, and returns tiles that are part of invalid melds. If performFix, then fix the table. */
+    public ArrayList<Tile> checkTable(boolean performFix) {
+        ArrayList<Tile> invalidTiles = new ArrayList<>();
+        for (TileCollection c : table) {
+            if (!c.isMeld()) {
+                for (int i = 0; i < c.getSize(); ++i)
+                    if (performFix)
+                        invalidTiles.add(c.remove(0));
+                    else
+                        invalidTiles.add(c.getTile(0));
+            }
+        }
+        fixEmptyMelds();
+        return invalidTiles;
+    }
 }

@@ -170,6 +170,25 @@ public class Player implements Serializable {
             drawTile();
     }
 
+    /* Checks table for invalid melds and available jokers, and returns number of freed jokers */
+    public int checkTable(Game beforeTurn, TileCollection handBeforeTurn, boolean endOfTurn) {
+        ArrayList<Tile> invalidTiles = game.checkTable(endOfTurn);
+        if (invalidTiles.size() == 0)
+            return 0;
+        if (endOfTurn) {
+            handleInvalidMove(beforeTurn, handBeforeTurn);
+            System.out.println("Reuse of table has resulted in invalid melds. Three tiles have been drawn as penalty.");
+            return 0;
+        }
+
+        int jokerCounter = 0;
+        for (Tile t : invalidTiles) {
+            if (t.getNumber().equals("*") && t.getColour().equals("*"))
+                jokerCounter++;
+        }
+        return jokerCounter;
+    }
+
     /* Prompts the user for an action for their turn */
     public void getAction() {
         game.resetTableTileSources();
@@ -185,6 +204,9 @@ public class Player implements Serializable {
                 break;
 
             System.out.println(getGameState());
+            int jokersAvailable = checkTable(beforeTurn, handBeforeTurn, false);
+            if (jokersAvailable > 0)
+                System.out.println("You have "+jokersAvailable+" additional joker(s) available on the table to use in a meld with your own tiles.");
             System.out.println(getOptions());
             String choice = scn.next();
 
@@ -225,6 +247,7 @@ public class Player implements Serializable {
                     handleInvalidMove(beforeTurn, handBeforeTurn);
                 }
             }
+            checkTable(beforeTurn, handBeforeTurn, true);
 
             if (hand.toString().equals("")) {
                 game.setWinner(name);
