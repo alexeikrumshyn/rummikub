@@ -189,6 +189,20 @@ public class Player implements Serializable {
         return jokerCounter;
     }
 
+    /* Checks if reused joker has only been used with tiles from hand */
+    public boolean validJokerReuse(String play) {
+        if (!play.contains(":*"))
+            return true;
+
+        String[] playedTiles = play.split("\\s+");
+        for (String tileStr : playedTiles) {
+            //invalid play if reused tiles other than joker
+            if (tileStr.contains(":") && !tileStr.contains("*"))
+                return false;
+        }
+        return true;
+    }
+
     /* Prompts the user for an action for their turn */
     public void getAction() {
         game.resetTableTileSources();
@@ -223,6 +237,16 @@ public class Player implements Serializable {
                     if (!isValidMeld(meldStr)) {
                         handleInvalidMove(beforeTurn, handBeforeTurn);
                         System.out.println("Invalid meld played - three tiles have been drawn as penalty.");
+                        return;
+                    }
+                    if (!game.isValidJokerReplacement(meldStr)) {
+                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        System.out.println("Joker was not replaced with a tile from your hand - three tiles have been drawn as penalty.");
+                        return;
+                    }
+                    if (!validJokerReuse(meldStr)) {
+                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        System.out.println("Joker was reused with tiles from the table - three tiles have been drawn as penalty.");
                         return;
                     }
                     TileCollection played = playMeld(meldStr);

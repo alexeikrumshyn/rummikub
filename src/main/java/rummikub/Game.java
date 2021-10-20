@@ -3,6 +3,7 @@ package rummikub;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Game implements Serializable {
@@ -202,6 +203,46 @@ public class Game implements Serializable {
         for (TileCollection c : empties) {
             table.remove(c);
         }
+    }
+
+    /* Checks joker replacement given user play */
+    public boolean isValidJokerReplacement(String play) {
+        String[] playedTiles = play.split("\\s+");
+        HashSet<Integer> affectedMelds = new HashSet<>(); //used to eliminate duplicates (checking same meld twice)
+        //get all melds tiles were reused from
+        for (int i = 0; i < playedTiles.length; ++i) {
+            if (playedTiles[i].contains(":")) {
+                String[] reused = playedTiles[i].split(":");
+                affectedMelds.add(Integer.parseInt(reused[0]));
+            }
+        }
+        //for each affected meld in play, find which one contains the joker and at which pos the joker is found
+        int jokerPos = -1;
+        for (Integer meldNum : affectedMelds) {
+            TileCollection currMeld = table.get(meldNum-1);
+            //case joker was in this meld, then get its position
+            if (currMeld.countJokers() == 1 && currMeld.getSize() != 1) {
+                for (int i = 0; i < currMeld.getSize(); ++i) {
+                    if (currMeld.getTile(i).getColour().equals("*")) {
+                        jokerPos = i;
+                        break;
+                    }
+                }
+            }
+        }
+        //case no melds with jokers affected, then no replacement to check
+        if (jokerPos == -1)
+            return true;
+
+        //for each affected meld, check the tile replacing it was not reused from the table
+        for (Integer meldNum : affectedMelds) {
+            TileCollection currMeld = table.get(meldNum-1);
+            //case this meld contains replacement for joker
+            if (currMeld.countJokers() == 0 && playedTiles[jokerPos].contains(":"))
+                    return false;
+        }
+
+        return true;
     }
 
     /* Checks if melds on table are valid, and returns tiles that are part of invalid melds. If performFix, then fix the table. */
