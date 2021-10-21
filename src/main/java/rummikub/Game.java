@@ -260,4 +260,26 @@ public class Game implements Serializable {
         fixEmptyMelds();
         return invalidTiles;
     }
+
+    /* Checks if tile was taken from meld with joker */
+    public boolean removedFromJokerMeld(String play) {
+        String[] playedTiles = play.split("\\s+");
+
+        //if removed just one tile from meld with joker, invalid (i.e. did not replace joker before taking a tile)
+        //this has to be true because at least 2 tiles must be reused from the meld to replace the joker
+        for (String tileStr : playedTiles) {
+            if (tileStr.contains(":")) {
+                String[] splitStr = tileStr.split(":");
+                int meldNum = Integer.parseInt(splitStr[0]);
+                TileCollection meld = table.get(meldNum-1);
+                if (meld.countJokers() > 0 && meld.getSize() > 1) {
+                    //count tiles taken from this meld in play
+                    int count = (play.split(meldNum+":")).length-1;
+                    if (count == 1)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
 }
