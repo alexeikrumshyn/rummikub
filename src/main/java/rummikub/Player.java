@@ -21,6 +21,7 @@ public class Player implements Serializable {
     int playerId = 0;
     boolean hasInitialPoints;
     private boolean mustDrawTile;
+    int score;
 
     Client clientConnection;
     Game game;
@@ -32,6 +33,7 @@ public class Player implements Serializable {
         hand.checkIfMeld = false;
         hasInitialPoints = false;
         mustDrawTile = true;
+        score = 0;
     }
 
     public static void main(String args[]) {
@@ -315,6 +317,7 @@ public class Player implements Serializable {
                 }
             }
             checkTable(beforeTurn, handBeforeTurn, true);
+            score = hand.getPoints()*-1;
 
             if (hand.toString().equals("")) {
                 game.setWinner(name);
