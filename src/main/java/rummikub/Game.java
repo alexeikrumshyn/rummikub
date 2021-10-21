@@ -80,6 +80,13 @@ public class Game implements Serializable {
         return str;
     }
 
+    /* Returns true if meld at idx on table contains tile corresponding to str, false otherwise */
+    public boolean tableContains(int idx, String str) {
+        if (idx > table.size()-1)
+            return false;
+        return table.get(idx).contains(str);
+    }
+
     /* Gets the winner of the Game */
     public String getWinner() {
         return winner;

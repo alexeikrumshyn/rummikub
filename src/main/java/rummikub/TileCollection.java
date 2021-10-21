@@ -56,6 +56,15 @@ public class TileCollection implements Serializable {
         return tiles.get(idx);
     }
 
+    /* Returns true if tile corresponding to str exists in collection, false otherwise */
+    public boolean contains(String str) {
+        for (Tile t : tiles) {
+            if (("|"+str+"|").equals(t.toString()))
+                return true;
+        }
+        return false;
+    }
+
     /* Returns true if collection is a valid run, false otherwise */
     public boolean isRun() {
 

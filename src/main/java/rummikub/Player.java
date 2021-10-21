@@ -162,10 +162,31 @@ public class Player implements Serializable {
         return opts;
     }
 
+    /* Checks if player typed valid tiles */
+    public boolean allTilesExist(String play) {
+        String[] playedTiles = play.split("\\s+");
+        for (String tileStr : playedTiles) {
+            //table reuse case
+            if (tileStr.contains(":")) {
+                String[] splitStr = tileStr.split(":");
+                if (!game.tableContains(Integer.parseInt(splitStr[0])-1, splitStr[1]))
+                    return false;
+            }
+            //from hand case
+            else {
+                if (!hand.contains(tileStr))
+                    return false;
+            }
+        }
+        return true;
+    }
+
     /* Logic for invalid move */
-    public void handleInvalidMove(Game beforeTurn, TileCollection handBeforeTurn) {
+    public void handleInvalidMove(Game beforeTurn, TileCollection handBeforeTurn, boolean penalty) {
         game = new Game(beforeTurn); //reset everything
         hand = new TileCollection(handBeforeTurn);
+        if (!penalty)
+            return;
         for (int i = 0; i < Config.PENALTY_TILES; ++i)
             drawTile();
     }
@@ -176,7 +197,7 @@ public class Player implements Serializable {
         if (invalidTiles.size() == 0)
             return 0;
         if (endOfTurn) {
-            handleInvalidMove(beforeTurn, handBeforeTurn);
+            handleInvalidMove(beforeTurn, handBeforeTurn, true);
             System.out.println("Reuse of table has resulted in invalid melds. Three tiles have been drawn as penalty.");
             return 0;
         }
@@ -241,28 +262,33 @@ public class Player implements Serializable {
                     System.out.println("Type Meld as space-separated tiles (eg. R5 B5 G5): ");
                     System.out.println("Note: if reusing tile from table, specify from which meld it is coming from, then a colon, then the tile (eg. 1:R5) ");
                     String meldStr = scn.next();
+                    if (!allTilesExist(meldStr)) {
+                        handleInvalidMove(beforeTurn, handBeforeTurn, false);
+                        System.out.println("You have tried to use a tile that does not exist - ending turn.");
+                        return;
+                    }
                     if (meldStr.contains(":") && !hasInitialPoints) {
-                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        handleInvalidMove(beforeTurn, handBeforeTurn, true);
                         System.out.println("You cannot reuse tiles from table until your initial " + Config.INITIAL_POINTS_THRESHOLD + " points have been played - three tiles have been drawn as penalty.");
                         return;
                     }
                     if (!isValidMeld(meldStr)) {
-                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        handleInvalidMove(beforeTurn, handBeforeTurn, true);
                         System.out.println("Invalid meld played - three tiles have been drawn as penalty.");
                         return;
                     }
                     if (!game.isValidJokerReplacement(meldStr)) {
-                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        handleInvalidMove(beforeTurn, handBeforeTurn, true);
                         System.out.println("Joker was not replaced with a tile from your hand - three tiles have been drawn as penalty.");
                         return;
                     }
                     if (!validJokerReuse(meldStr)) {
-                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        handleInvalidMove(beforeTurn, handBeforeTurn, true);
                         System.out.println("Joker was reused with tiles from the table - three tiles have been drawn as penalty.");
                         return;
                     }
                     if (game.removedFromJokerMeld(meldStr)) {
-                        handleInvalidMove(beforeTurn, handBeforeTurn);
+                        handleInvalidMove(beforeTurn, handBeforeTurn, true);
                         System.out.println("Tile from meld with joker was reused without first replacing the joker - three tiles have been drawn as penalty.");
                         return;
                     }
@@ -285,7 +311,7 @@ public class Player implements Serializable {
                 //if still not reached initial points, undo moves and draw penalty tiles
                 if (meldsPlayed.size() != 0 && !hasInitialPoints) {
                     System.out.println("Your first meld(s) did not reach " + Config.INITIAL_POINTS_THRESHOLD + " points - three tiles have been drawn as penalty.");
-                    handleInvalidMove(beforeTurn, handBeforeTurn);
+                    handleInvalidMove(beforeTurn, handBeforeTurn, true);
                 }
             }
             checkTable(beforeTurn, handBeforeTurn, true);
