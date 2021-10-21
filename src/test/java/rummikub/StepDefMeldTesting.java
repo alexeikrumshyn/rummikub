@@ -28,6 +28,11 @@ public class StepDefMeldTesting {
         srv.players[pNum-1].hasInitialPoints = true;
     }
 
+    @When("Player {int} draws {string}")
+    public void player_draws(int pNum, String tile) {
+        srv.players[pNum-1].drawTile(tile);
+    }
+
     @When("Player {int} chooses to draw")
     public void player_chooses_to_draw(int pNum) {
         String expected = "Select an action: \n" +
@@ -93,5 +98,15 @@ public class StepDefMeldTesting {
             if (!expectedTiles[i].equals("?"))
                 assertTrue(actualHand.contains(expectedTiles[i]));
         }
+    }
+
+    @Then("Player {int} wins")
+    public void player_wins(int pNum) {
+        assertEquals(srv.players[pNum-1].name, srv.game.getWinner());
+    }
+
+    @Then("Player {int} score is {int}")
+    public void player_score_is(int pNum, int score) {
+        assertEquals(score, srv.players[pNum-1].score);
     }
 }
