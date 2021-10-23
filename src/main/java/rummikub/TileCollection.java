@@ -59,7 +59,7 @@ public class TileCollection implements Serializable {
     /* Returns true if tile corresponding to str exists in collection, false otherwise */
     public boolean contains(String str) {
         for (Tile t : tiles) {
-            if (("|"+str+"|").equals(t.toString()))
+            if ((t.getColour()+t.getNumber()).equals(str) || (t.getColour().equals("*") && t.getNumber().equals("*") && t.getColour().equals(str)))
                 return true;
         }
         return false;
