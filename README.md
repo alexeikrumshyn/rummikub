@@ -1,5 +1,5 @@
 # rummikub
-A textually interfaced game of Rummikub using TDD principles for COMP 4004
+A textually interfaced game of Rummikub using TDD & BDD principles for COMP 4004
 
 How to import the project into IntelliJ:
 1. Download and extract ZIP from GitHub.
